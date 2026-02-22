@@ -2,23 +2,20 @@ import config from '@/payload.config'
 import { RootPage, generatePageMetadata } from '@payloadcms/next/views'
 
 type AdminPageProps = {
-  params?: {
-    segments?: string[]
-  }
-  searchParams?: Record<string, string | string[] | undefined>
+  params?: Promise<{ segments?: string[] }>
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
-export const generateMetadata = ({ params, searchParams }: AdminPageProps) =>
-  generatePageMetadata({
-    config,
-    params: params ?? {},
-    searchParams: searchParams ?? {},
-  })
+export async function generateMetadata(props: AdminPageProps) {
+  const params = (await props.params) ?? {}
+  const searchParams = (await props.searchParams) ?? {}
 
-export default function Page({ params, searchParams }: AdminPageProps) {
-  return RootPage({
-    config,
-    params: params ?? {},
-    searchParams: searchParams ?? {},
-  })
+  return generatePageMetadata({ config, params, searchParams })
+}
+
+export default async function Page(props: AdminPageProps) {
+  const params = (await props.params) ?? {}
+  const searchParams = (await props.searchParams) ?? {}
+
+  return RootPage({ config, params, searchParams })
 }
