@@ -1,7 +1,6 @@
 import { draftMode } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 
-// Force Node runtime (draftMode needs Node, edge can be problematic)
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
@@ -24,8 +23,13 @@ export async function GET(request: NextRequest) {
 
     const safeRedirect = redirectTo.startsWith('/') ? redirectTo : '/'
 
-    // Use relative redirect to avoid URL construction weirdness
-    return NextResponse.redirect(safeRedirect, { status: 307 })
+    // Absolute redirect URL required in this runtime
+    const url = new URL(request.url)
+    url.pathname = safeRedirect
+    url.search = ''
+    url.hash = ''
+
+    return NextResponse.redirect(url, { status: 307 })
   } catch (err) {
     console.error('Draft enable crashed:', err)
     return new NextResponse('Draft enable crashed. Check Vercel logs.', { status: 500 })
