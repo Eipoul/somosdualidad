@@ -1,23 +1,13 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import {Button} from '@/components/Button'
 import {Card} from '@/components/Card'
-import {NewsletterForm} from '@/components/NewsletterForm'
 import {FadeIn} from '@/components/FadeIn'
+import {NewsletterForm} from '@/components/NewsletterForm'
 import {Section} from '@/components/Section'
+import {getFeaturedEpisode, getLatestEpisodes} from '@/lib/sanity/podcast'
 import type {PageSection, PortableTextBlock, PortableTextSpan} from '@/lib/sanity/types'
 
 type SectionRendererProps = {sections?: PageSection[]}
-
-function AbstractHeroVisual() {
-  return (
-    <div className="relative min-h-[320px] overflow-hidden rounded-3xl border border-accentDark/10 bg-gradient-to-br from-accentLight/20 via-white to-accentDark/10 shadow-soft">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(200,169,126,0.4),transparent_55%)]" />
-      <div className="absolute -left-8 bottom-8 h-44 w-44 rounded-full bg-accentDark/15 blur-2xl" />
-      <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-accentLight/30 blur-2xl" />
-    </div>
-  )
-}
 
 function portableToText(blocks: PortableTextBlock[] = []) {
   return blocks
@@ -26,88 +16,27 @@ function portableToText(blocks: PortableTextBlock[] = []) {
     .join('\n')
 }
 
-export function SectionRenderer({sections = []}: SectionRendererProps) {
+export async function SectionRenderer({sections = []}: SectionRendererProps) {
+  const episodesSection = sections.find((section) => section._type === 'sectionEpisodes')
+  const limit = episodesSection && 'maxItems' in episodesSection ? episodesSection.maxItems || 6 : 6
+  const [episodes, featured] = episodesSection ? await Promise.all([getLatestEpisodes(limit), getFeaturedEpisode()]) : [[], null]
+
   return (
     <>
       {sections.map((section, idx) => {
         switch (section._type) {
           case 'sectionHero':
-            return (
-              <Section key={section._key || idx} className="pb-12 pt-10 md:pt-16">
-                <div className="grid items-center gap-8 md:grid-cols-2">
-                  <FadeIn>
-                    {section.eyebrow ? <p className="text-sm uppercase tracking-[0.2em] text-accentDark/70">{section.eyebrow}</p> : null}
-                    <h1 className="mt-4 font-serif text-4xl leading-tight md:text-6xl">{section.title}</h1>
-                    {section.subtitle ? <p className="mt-4 max-w-xl text-base text-foreground/75 md:text-lg">{section.subtitle}</p> : null}
-                    <div className="mt-8 flex flex-wrap gap-3">
-                      {section.primaryCta?.label ? <Button href={section.primaryCta.href || '#'}>{section.primaryCta.label}</Button> : null}
-                      {section.secondaryCta?.label ? <Button href={section.secondaryCta.href || '#'} variant="secondary">{section.secondaryCta.label}</Button> : null}
-                    </div>
-                  </FadeIn>
-                  <FadeIn delay={0.1}><AbstractHeroVisual /></FadeIn>
-                </div>
-              </Section>
-            )
-          case 'sectionRichText':
-            return (
-              <Section key={section._key || idx} className="bg-white/55">
-                <div className={section.align === 'center' ? 'text-center' : ''}>
-                  {section.title ? <h2 className="font-serif text-3xl md:text-4xl">{section.title}</h2> : null}
-                  <p className="mt-6 whitespace-pre-line text-lg leading-relaxed text-foreground/80">{portableToText(section.body)}</p>
-                </div>
-              </Section>
-            )
-          case 'sectionImage':
-            return (
-              <Section key={section._key || idx}>
-                {section.image?.asset?.url ? <Image src={section.image.asset.url} alt={section.alt || ''} width={1600} height={900} className="h-auto w-full rounded-3xl" /> : null}
-                {section.caption ? <p className="mt-2 text-sm text-foreground/70">{section.caption}</p> : null}
-              </Section>
-            )
-          case 'sectionCta':
-            return (
-              <Section key={section._key || idx}>
-                <div className="rounded-2xl border border-accentDark/10 bg-white/60 p-8">
-                  {section.title ? <h2 className="font-serif text-3xl">{section.title}</h2> : null}
-                  {section.subtitle ? <p className="mt-3 text-foreground/75">{section.subtitle}</p> : null}
-                  {section.button?.label ? <div className="mt-6"><Button href={section.button.href || '#'}>{section.button.label}</Button></div> : null}
-                </div>
-              </Section>
-            )
-          case 'sectionSteps':
-            return (
-              <Section key={section._key || idx} title={section.title}>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {(section.items || []).map((item, itemIdx: number) => (
-                    <Card key={item._key || itemIdx}><p className="mb-3 text-xs uppercase tracking-[0.2em] text-accentDark/70">Paso {itemIdx + 1}</p><h3 className="font-serif text-2xl">{item.title}</h3><p className="mt-2 text-sm text-foreground/75">{item.description}</p></Card>
-                  ))}
-                </div>
-              </Section>
-            )
-          case 'sectionFaq':
-            return (
-              <Section key={section._key || idx} title={section.title || 'Preguntas frecuentes'} className="bg-white/50">
-                <div className="mt-6 space-y-3">{(section.items || []).map((item, i: number) => <details key={item._key || i} className="rounded-lg border p-4"><summary className="cursor-pointer font-medium">{item.q}</summary><p className="mt-2 text-foreground/75">{item.a}</p></details>)}</div>
-              </Section>
-            )
-          case 'sectionTestimonials':
-            return <Section key={section._key || idx} title={section.title}><div className="grid gap-4 md:grid-cols-3">{(section.items || []).map((item, i: number) => <Card key={item._key || i}><p className="text-sm leading-relaxed text-foreground/80">“{item.quote}”</p><p className="mt-4 text-sm font-medium">{item.name}</p><p className="text-xs text-foreground/65">{item.role}</p></Card>)}</div></Section>
-          case 'sectionCardGrid':
-            return <Section key={section._key || idx} title={section.title} subtitle={section.subtitle}><div className="grid gap-4 md:grid-cols-3">{(section.cards || []).map((card, i: number) => <Card key={card._key || i}><h3 className="font-serif text-2xl">{card.title}</h3><p className="mt-2 text-sm text-foreground/75">{card.description}</p>{card.link?.href ? <Link href={card.link.href} className="mt-4 inline-block text-sm underline">{card.link.label || 'Ver más'}</Link> : null}</Card>)}</div></Section>
-          case 'sectionSpacer':
-            return <div key={section._key || idx} style={{height: `${section.height || 40}px`}} className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">{section.showDivider ? <hr className="border-accentDark/10" /> : null}</div>
+            return <Section key={section._key || idx} className="pb-20 pt-16"><FadeIn><p className="text-xs uppercase tracking-[0.2em] text-accentDark/60">{section.eyebrow}</p><h1 className="mt-4 max-w-4xl font-serif text-5xl leading-tight md:text-7xl">{section.title}</h1><p className="mt-6 max-w-2xl text-lg text-foreground/70">{section.subtitle}</p><div className="mt-8 flex gap-3">{section.primaryCta?.label ? <Button href={section.primaryCta.href || '#'}>{section.primaryCta.label}</Button> : null}{section.secondaryCta?.label ? <Button href={section.secondaryCta.href || '#'} variant="secondary">{section.secondaryCta.label}</Button> : null}</div></FadeIn></Section>
+          case 'sectionWhoWeAre':
+            return <Section key={section._key || idx} className="bg-white/70"><h2 className="font-serif text-4xl">{section.title}</h2><p className="mt-6 max-w-3xl whitespace-pre-line text-lg text-foreground/75">{portableToText(section.body)}</p></Section>
+          case 'sectionEpisodes':
+            return <Section key={section._key || idx}><h2 className="font-serif text-4xl">{section.title}</h2><p className="mt-3 text-foreground/70">{section.subtitle}</p>{section.showFeatured && featured ? <Card className="mt-8"><p className="text-xs uppercase tracking-[0.2em] text-accentDark/60">Episodio destacado</p><h3 className="mt-2 font-serif text-3xl">{featured.title}</h3><p className="mt-2 text-sm text-foreground/75">{featured.description}</p></Card> : null}<div className="mt-6 grid gap-4 md:grid-cols-2">{episodes.map((episode) => <Card key={episode._id} className="transition duration-300 hover:-translate-y-1 hover:shadow-soft"><p className="text-xs text-foreground/60">{episode.publishDate ? new Date(episode.publishDate).toLocaleDateString('es-ES') : ''}</p><h3 className="mt-2 font-serif text-2xl">{episode.title}</h3><p className="mt-2 text-sm text-foreground/70">{episode.description}</p><div className="mt-4 flex gap-3 text-sm">{episode.streamingLinks?.map((link, i) => link.url ? <Link key={i} href={link.url} className="underline">{link.platform}</Link> : null)}</div></Card>)}</div></Section>
           case 'sectionNewsletterSignup':
-            return (
-              <Section key={section._key || idx}>
-                <NewsletterForm
-                  title={section.title}
-                  subtitle={section.subtitle}
-                  buttonLabel={section.buttonLabel}
-                  consentLabel={section.consentLabel}
-                  successMessage={section.successMessage}
-                />
-              </Section>
-            )
+            return <Section key={section._key || idx} id="suscribete"><NewsletterForm {...section} /></Section>
+          case 'sectionFaq':
+            return <Section key={section._key || idx} className="bg-white/60"><h2 className="font-serif text-4xl">{section.title}</h2><div className="mt-6 space-y-3">{section.items?.map((item, i) => <details key={item._key || i} className="rounded-2xl border border-accentDark/10 bg-white p-5"><summary className="cursor-pointer font-medium">{item.q}</summary><p className="mt-3 text-foreground/75">{item.a}</p></details>)}</div></Section>
+          case 'sectionCta':
+            return <Section key={section._key || idx}><div className="rounded-3xl border border-accentDark/10 bg-white p-10 text-center shadow-soft"><h2 className="font-serif text-4xl">{section.title}</h2><p className="mx-auto mt-4 max-w-2xl text-foreground/70">{section.subtitle}</p>{section.button?.label ? <div className="mt-7"><Button href={section.button.href || '#'}>{section.button.label}</Button></div> : null}</div></Section>
           default:
             return null
         }
