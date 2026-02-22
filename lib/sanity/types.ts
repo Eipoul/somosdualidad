@@ -82,6 +82,62 @@ export type SectionSpacer = BaseSection & {
   showDivider?: boolean
 }
 
+type PodcastRef = {
+  _id?: string
+  _type?: 'podcast'
+  title?: string
+  slug?: string
+  description?: string
+  image?: {asset?: {url?: string}}
+  author?: {name?: string}
+}
+
+export type SectionPodcasts = BaseSection & {
+  _type: 'sectionPodcasts'
+  title?: string
+  subtitle?: string
+  podcasts?: PodcastRef[]
+  limit?: number
+}
+
+type EpisodeRef = {
+  _id?: string
+  _type?: 'episode'
+  title?: string
+  slug?: string
+  episodeNumber?: number
+  description?: string
+  image?: {asset?: {url?: string}}
+  duration?: number
+  audioUrl?: string
+  publishedAt?: string
+}
+
+type PodcastWithEpisodes = {
+  _id?: string
+  _type?: 'podcast'
+  title?: string
+  slug?: string
+  episodes?: EpisodeRef[]
+}
+
+export type SectionEpisodes = BaseSection & {
+  _type: 'sectionEpisodes'
+  title?: string
+  subtitle?: string
+  podcast?: PodcastWithEpisodes
+  layout?: 'grid' | 'list'
+  limit?: number
+}
+
+export type SectionSubscribe = BaseSection & {
+  _type: 'sectionSubscribe'
+  title?: string
+  subtitle?: string
+  description?: string
+  buttonLabel?: string
+}
+
 export type PageSection =
   | SectionHero
   | SectionRichText
@@ -91,6 +147,9 @@ export type PageSection =
   | SectionFaq
   | SectionTestimonials
   | SectionCardGrid
+  | SectionPodcasts
+  | SectionEpisodes
+  | SectionSubscribe
   | SectionSpacer
 
 export type SiteSettings = {

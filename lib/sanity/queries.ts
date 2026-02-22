@@ -14,7 +14,9 @@ const SECTIONS_PROJECTION = `sections[]{
   ...,
   image{..., asset->},
   cards[]{..., link},
-  items[]{...}
+  items[]{...},
+  podcasts[]->{_id, title, slug, description, image{..., asset->}, author->{name}},
+  podcast->{_id, title, slug, episodes[]->{_id, title, slug, episodeNumber, description, image{..., asset->}, duration, audioUrl, publishedAt}}
 }`
 
 export const PAGE_BY_SLUG_QUERY = `*[_type == "page" && slug.current == $slug][0]{
