@@ -12,5 +12,10 @@ export async function GET(request: NextRequest) {
   }
 
   ;(await draftMode()).enable()
+
+  if (!url.startsWith('/')) {
+    redirect('/')
+  }
+
   redirect(url)
 }
