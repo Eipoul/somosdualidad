@@ -26,6 +26,7 @@ Y en el Studio (`sanity/.env` o variables del deploy de Studio):
 SANITY_STUDIO_PROJECT_ID=qi7d9rsb
 SANITY_STUDIO_DATASET=production
 SANITY_STUDIO_PREVIEW_URL=https://somosdualidad.com
+SANITY_STUDIO_PREVIEW_SECRET=el_mismo_valor_que_SANITY_PREVIEW_SECRET
 ```
 
 ## Ejecutar en local
@@ -72,7 +73,7 @@ npm run dev
 
 El editor puede agregar, eliminar, reordenar y editar secciones sin tocar código.
 
-## Cómo editar páginas (equipo editorial)
+## Cómo editar páginas (equipo editorial - modo fácil)
 
 1. Entra al Studio (`admin.*`).
 2. En **Site settings** edita navegación, CTA del header y footer.
@@ -83,13 +84,14 @@ El editor puede agregar, eliminar, reordenar y editar secciones sin tocar códig
    - Agrega bloques
    - Arrastra para reordenar
    - Elimina los que no uses
-5. Publica cambios con **Publish**.
+5. Abre **Presentation** (preview en vivo) para revisar cambios sin publicar.
+6. Cuando todo esté correcto, publica con **Publish**.
 
 ## Preview y draft mode
 
 El Studio Presentation tool está configurado para usar:
 
-- enable preview: `/api/draft-mode/enable`
+- enable preview: `/api/draft-mode/enable` (si defines secreto en Studio, se envía automáticamente como query param)
 - disable preview: `/api/draft-mode/disable`
 
 En preview se consulta `perspective: drafts` con token read-only (`SANITY_API_READ_TOKEN`).
