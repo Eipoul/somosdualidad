@@ -4,9 +4,10 @@ import { NextResponse, type NextRequest } from 'next/server'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-export async function GET(request: NextRequest) {
+export function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
+
     const secret = searchParams.get('secret') || ''
     const redirectTo = searchParams.get('redirect') || '/'
 
@@ -19,11 +20,10 @@ export async function GET(request: NextRequest) {
       return new NextResponse('SANITY_PREVIEW_SECRET is SET but does NOT MATCH', { status: 401 })
     }
 
-    ;(await draftMode()).enable()
+    draftMode().enable()
 
     const safeRedirect = redirectTo.startsWith('/') ? redirectTo : '/'
 
-    // Absolute redirect URL required in this runtime
     const url = new URL(request.url)
     url.pathname = safeRedirect
     url.search = ''
