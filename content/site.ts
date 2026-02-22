@@ -18,7 +18,9 @@ export const siteContent = {
     { label: "Inicio", href: "/" },
     { label: "Sobre", href: "/sobre" },
     { label: "Experiencias", href: "/sobre#experiencias" },
+    { label: "Podcasts", href: "/podcasts" },
     { label: "Recursos", href: "/recursos" },
+    { label: "Suscribirse", href: "/subscribe" },
     { label: "Contacto", href: "/contacto" }
   ],
   trustIndicators: [

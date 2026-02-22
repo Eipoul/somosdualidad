@@ -182,3 +182,58 @@ export const sectionSpacer = defineType({
     defineField({name: 'showDivider', title: 'Mostrar divisor', type: 'boolean', initialValue: true}),
   ],
 })
+
+export const sectionPodcasts = defineType({
+  name: 'sectionPodcasts',
+  title: 'Podcasts Grid',
+  type: 'object',
+  fields: [
+    defineField({name: 'title', title: 'Título', type: 'string'}),
+    defineField({name: 'subtitle', title: 'Subtítulo', type: 'text'}),
+    defineField({
+      name: 'podcasts',
+      title: 'Podcasts',
+      type: 'array',
+      of: [{type: 'reference', to: {type: 'podcast'}}],
+      description: 'Select podcasts to display. Leave empty to show all.',
+    }),
+    defineField({name: 'limit', title: 'Limit (0 = all)', type: 'number', initialValue: 0}),
+  ],
+})
+
+export const sectionEpisodes = defineType({
+  name: 'sectionEpisodes',
+  title: 'Episodes List',
+  type: 'object',
+  fields: [
+    defineField({name: 'title', title: 'Título', type: 'string'}),
+    defineField({name: 'subtitle', title: 'Subtítulo', type: 'text'}),
+    defineField({
+      name: 'podcast',
+      title: 'Podcast',
+      type: 'reference',
+      to: {type: 'podcast'},
+      description: 'Select a podcast to show its episodes',
+    }),
+    defineField({
+      name: 'layout',
+      title: 'Layout',
+      type: 'string',
+      options: {list: [{title: 'Grid', value: 'grid'}, {title: 'List', value: 'list'}], layout: 'radio'},
+      initialValue: 'grid',
+    }),
+    defineField({name: 'limit', title: 'Limit (0 = all)', type: 'number', initialValue: 0}),
+  ],
+})
+
+export const sectionSubscribe = defineType({
+  name: 'sectionSubscribe',
+  title: 'Subscribe / Newsletter',
+  type: 'object',
+  fields: [
+    defineField({name: 'title', title: 'Título', type: 'string'}),
+    defineField({name: 'subtitle', title: 'Subtítulo', type: 'text', rows: 3}),
+    defineField({name: 'description', title: 'Descripción', type: 'text', rows: 4}),
+    defineField({name: 'buttonLabel', title: 'Botón Label', type: 'string', initialValue: 'Subscribe'}),
+  ],
+})

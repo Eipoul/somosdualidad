@@ -20,12 +20,12 @@ type ActionButtonProps = SharedProps &
   };
 
 const baseStyles =
-  "inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accentLight focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+  "inline-flex items-center justify-center rounded-lg px-7 py-3 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accentLight focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:shadow-subtle active:scale-95";
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-accentDark text-background hover:bg-[#3A3939]",
-  secondary: "border border-accentDark/40 bg-transparent text-foreground hover:bg-warmGray-100",
-  ghost: "bg-transparent text-foreground hover:bg-warmGray-100"
+  primary: "bg-accentDark text-background hover:bg-[#3A3939] shadow-subtle",
+  secondary: "border border-accentDark/20 bg-white/40 text-foreground hover:bg-white/60 hover:border-accentDark/30",
+  ghost: "bg-transparent text-foreground hover:bg-warmGray-50"
 };
 
 export function Button(props: LinkButtonProps | ActionButtonProps) {

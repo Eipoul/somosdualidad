@@ -8,7 +8,7 @@ type CardProps = {
 
 export function Card({ className, children }: CardProps) {
   return (
-    <article className={cn("rounded-3xl border border-accentDark/10 bg-white/70 p-6 shadow-soft", className)}>
+    <article className={cn("group rounded-2xl border border-accentDark/8 bg-white/50 p-8 shadow-subtle transition-all duration-300 hover:bg-white/60 hover:shadow-refined hover:border-accentDark/15", className)}>
       {children}
     </article>
   );

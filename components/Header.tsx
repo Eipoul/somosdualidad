@@ -10,17 +10,17 @@ export function Header({settings}: {settings: SiteSettings | null}) {
   const navigation = settings?.navigation || []
 
   return (
-    <header className="sticky top-0 z-50 border-b border-accentDark/10 bg-background/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="font-serif text-xl tracking-wide">{settings?.logoText || settings?.siteName || 'Somos Dualidad'}</Link>
-        <nav aria-label="Principal" className="hidden items-center gap-6 md:flex">
+    <header className="sticky top-0 z-50 border-b border-accentDark/8 bg-background/95 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
+        <Link href="/" className="font-serif text-2xl tracking-tight hover:text-accentLight transition-colors">{settings?.logoText || settings?.siteName || 'Somos Dualidad'}</Link>
+        <nav aria-label="Principal" className="hidden items-center gap-8 md:flex">
           {navigation.map((item, idx) => (
-            <Link key={`${item.href}-${idx}`} href={item.href || '#'} className="text-sm text-foreground/80 transition hover:text-foreground">{item.label}</Link>
+            <Link key={`${item.href}-${idx}`} href={item.href || '#'} className="text-sm text-foreground/70 transition-colors hover:text-foreground">{item.label}</Link>
           ))}
         </nav>
         <div className="hidden md:block">{settings?.primaryCta?.label ? <Button href={settings.primaryCta.href || '#'}>{settings.primaryCta.label}</Button> : null}</div>
-        <button type="button" className="rounded-md p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accentLight md:hidden" aria-expanded={isOpen} aria-controls="mobile-menu" aria-label="Abrir menú" onClick={() => setIsOpen((prev) => !prev)}>
-          <span className="block h-0.5 w-6 bg-foreground" /><span className="mt-1 block h-0.5 w-6 bg-foreground" /><span className="mt-1 block h-0.5 w-6 bg-foreground" />
+        <button type="button" className="rounded-lg p-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accentLight md:hidden transition-colors hover:bg-warmGray-100" aria-expanded={isOpen} aria-controls="mobile-menu" aria-label="Abrir menú" onClick={() => setIsOpen((prev) => !prev)}>
+          <span className="block h-0.5 w-6 bg-foreground" /><span className="mt-1.5 block h-0.5 w-6 bg-foreground" /><span className="mt-1.5 block h-0.5 w-6 bg-foreground" />
         </button>
       </div>
       {isOpen ? (
