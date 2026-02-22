@@ -1,3 +1,4 @@
+return new Response('DISABLE OK - NEW DEPLOY', { status: 200 })
 import { draftMode } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 
