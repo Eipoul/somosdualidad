@@ -5,17 +5,21 @@ import {FormEvent, useMemo, useState} from 'react'
 type NewsletterFormProps = {
   title?: string
   subtitle?: string
+  namePlaceholder?: string
+  emailPlaceholder?: string
   buttonLabel?: string
   consentLabel?: string
   successMessage?: string
 }
 
 export function NewsletterForm({
-  title = 'Suscríbete al newsletter',
+  title = 'Suscríbete',
   subtitle,
+  namePlaceholder = 'Tu nombre (opcional)',
+  emailPlaceholder = 'tu@email.com',
   buttonLabel = 'Suscribirme',
   consentLabel = 'Acepto recibir novedades por email.',
-  successMessage = '¡Gracias! Revisa tu correo para confirmar.',
+  successMessage = '¡Gracias por suscribirte!',
 }: NewsletterFormProps) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
@@ -25,11 +29,10 @@ export function NewsletterForm({
     event.preventDefault()
     setStatus('loading')
     setMessage('')
-
     const formData = new FormData(event.currentTarget)
 
     try {
-      const response = await fetch('/api/newsletter', {
+      const response = await fetch('/api/newsletter/subscribe', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -41,9 +44,7 @@ export function NewsletterForm({
           startedAt,
         }),
       })
-
-      if (!response.ok) throw new Error('No se pudo enviar el formulario.')
-
+      if (!response.ok) throw new Error('request failed')
       setStatus('success')
       setMessage(successMessage)
       event.currentTarget.reset()
@@ -54,24 +55,17 @@ export function NewsletterForm({
   }
 
   return (
-    <div className="rounded-2xl border border-accentDark/10 bg-white/60 p-8">
-      <h2 className="font-serif text-3xl">{title}</h2>
+    <div className="rounded-3xl border border-accentDark/10 bg-white p-8 shadow-soft">
+      <h2 className="font-serif text-4xl">{title}</h2>
       {subtitle ? <p className="mt-3 text-foreground/75">{subtitle}</p> : null}
       <form className="mt-6 grid gap-4" onSubmit={onSubmit}>
         <input name="website" className="hidden" tabIndex={-1} autoComplete="off" />
-        <input name="name" required placeholder="Tu nombre" className="rounded-md border border-accentDark/20 bg-white px-4 py-3" />
-        <input name="email" type="email" required placeholder="tu@email.com" className="rounded-md border border-accentDark/20 bg-white px-4 py-3" />
-        <label className="flex items-start gap-3 text-sm text-foreground/80">
-          <input name="consent" type="checkbox" className="mt-1" />
-          <span>{consentLabel}</span>
-        </label>
-        <button type="submit" disabled={status === 'loading'} className="inline-flex w-fit rounded-full bg-accentDark px-6 py-3 text-sm font-semibold text-white disabled:opacity-60">
-          {status === 'loading' ? 'Enviando...' : buttonLabel}
-        </button>
+        <input name="name" placeholder={namePlaceholder} className="rounded-xl border border-accentDark/20 px-4 py-3" />
+        <input name="email" type="email" required aria-label="Email" placeholder={emailPlaceholder} className="rounded-xl border border-accentDark/20 px-4 py-3" />
+        <label className="flex gap-2 text-sm text-foreground/80"><input name="consent" type="checkbox" /><span>{consentLabel}</span></label>
+        <button type="submit" disabled={status === 'loading'} className="w-fit rounded-full bg-accentDark px-6 py-3 text-sm font-semibold text-white transition hover:scale-[1.02] active:scale-[0.99] disabled:opacity-60">{status === 'loading' ? 'Enviando...' : buttonLabel}</button>
       </form>
-      {message ? (
-        <p className={`mt-4 text-sm ${status === 'success' ? 'text-green-700' : 'text-red-700'}`}>{message}</p>
-      ) : null}
+      {message ? <p className={`mt-4 text-sm ${status === 'success' ? 'text-green-700' : 'text-red-700'}`}>{message}</p> : null}
     </div>
   )
 }

@@ -1,21 +1,9 @@
 export type Link = {label?: string; href?: string}
 
-export type PortableTextSpan = {
-  _type?: 'span'
-  _key?: string
-  text?: string
-}
+export type PortableTextSpan = {_type?: 'span'; _key?: string; text?: string}
+export type PortableTextBlock = {_type?: 'block'; _key?: string; children?: PortableTextSpan[]}
 
-export type PortableTextBlock = {
-  _type?: 'block'
-  _key?: string
-  children?: PortableTextSpan[]
-}
-
-type BaseSection = {
-  _type: string
-  _key?: string
-}
+type BaseSection = {_type: string; _key?: string}
 
 export type SectionHero = BaseSection & {
   _type: 'sectionHero'
@@ -26,82 +14,22 @@ export type SectionHero = BaseSection & {
   secondaryCta?: Link
 }
 
-export type SectionRichText = BaseSection & {
-  _type: 'sectionRichText'
-  title?: string
-  align?: 'left' | 'center'
-  body?: PortableTextBlock[]
-}
-
-export type SectionImage = BaseSection & {
-  _type: 'sectionImage'
-  image?: {asset?: {url?: string}}
-  alt?: string
-  caption?: string
-}
-
-export type SectionCta = BaseSection & {
-  _type: 'sectionCta'
-  title?: string
-  subtitle?: string
-  button?: Link
-}
-
-type StepItem = {_key?: string; title?: string; description?: string}
-export type SectionSteps = BaseSection & {
-  _type: 'sectionSteps'
-  title?: string
-  items?: StepItem[]
-}
-
-type FaqItem = {_key?: string; q?: string; a?: string}
-export type SectionFaq = BaseSection & {
-  _type: 'sectionFaq'
-  title?: string
-  items?: FaqItem[]
-}
-
-type TestimonialItem = {_key?: string; quote?: string; name?: string; role?: string}
-export type SectionTestimonials = BaseSection & {
-  _type: 'sectionTestimonials'
-  title?: string
-  items?: TestimonialItem[]
-}
-
-type CardGridCard = {_key?: string; title?: string; description?: string; link?: Link}
-export type SectionCardGrid = BaseSection & {
-  _type: 'sectionCardGrid'
-  title?: string
-  subtitle?: string
-  cards?: CardGridCard[]
-}
-
-export type SectionSpacer = BaseSection & {
-  _type: 'sectionSpacer'
-  height?: number
-  showDivider?: boolean
-}
-
+export type SectionWhoWeAre = BaseSection & {_type: 'sectionWhoWeAre'; title?: string; body?: PortableTextBlock[]}
+export type SectionEpisodes = BaseSection & {_type: 'sectionEpisodes'; title?: string; subtitle?: string; maxItems?: number; showFeatured?: boolean}
 export type SectionNewsletterSignup = BaseSection & {
   _type: 'sectionNewsletterSignup'
   title?: string
   subtitle?: string
+  namePlaceholder?: string
+  emailPlaceholder?: string
   buttonLabel?: string
   consentLabel?: string
   successMessage?: string
 }
+export type SectionFaq = BaseSection & {_type: 'sectionFaq'; title?: string; items?: {_key?: string; q?: string; a?: string}[]}
+export type SectionCta = BaseSection & {_type: 'sectionCta'; title?: string; subtitle?: string; button?: Link}
 
-export type PageSection =
-  | SectionHero
-  | SectionRichText
-  | SectionImage
-  | SectionCta
-  | SectionSteps
-  | SectionFaq
-  | SectionTestimonials
-  | SectionCardGrid
-  | SectionNewsletterSignup
-  | SectionSpacer
+export type PageSection = SectionHero | SectionWhoWeAre | SectionEpisodes | SectionNewsletterSignup | SectionFaq | SectionCta
 
 export type SiteSettings = {
   siteName?: string
@@ -112,14 +40,18 @@ export type SiteSettings = {
   socialLinks?: Link[]
   legalLinks?: Link[]
   footerCopy?: string
+  newsletterHeadline?: string
+  newsletterCopy?: string
   defaultSeo?: {title?: string; description?: string; ogImage?: {asset?: {url?: string}}}
 }
 
-export type PageData = {
+export type Episode = {
   _id: string
-  title?: string
-  slug?: string
-  routeType?: string
-  seo?: {title?: string; description?: string}
-  sections?: PageSection[]
+  title: string
+  slug: string
+  description?: string
+  publishDate?: string
+  streamingLinks?: {platform?: string; url?: string}[]
 }
+
+export type PageData = {_id: string; title?: string; slug?: string; seo?: {title?: string; description?: string}; sections?: PageSection[]}
