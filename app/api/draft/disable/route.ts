@@ -1,4 +1,3 @@
-return new Response('DISABLE OK - NEW DEPLOY', { status: 200 })
 import { draftMode } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -7,6 +6,9 @@ export const dynamic = 'force-dynamic'
 
 export function GET(request: NextRequest) {
   try {
+    // Watermark (optional): uncomment for testing
+    // return new NextResponse('DISABLE OK - NEW DEPLOY', { status: 200 })
+
     const { searchParams } = new URL(request.url)
     const redirectTo = searchParams.get('redirect') || '/'
 
