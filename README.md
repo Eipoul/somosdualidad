@@ -58,6 +58,17 @@ Compatibilidad con configuración previa:
 
 Esto permite mantener la configuración actual de Vercel sin romper preview.
 
+
+## Tipos de Payload (TypeScript)
+
+El proyecto usa tipos generados por Payload en `payload-types.ts` (configurado en `payload.config.ts`).
+
+Para regenerarlos cuando cambien colecciones/globals:
+
+```bash
+npm run generate:types
+```
+
 ## Newsletter
 
 Endpoint público:
