@@ -82,6 +82,15 @@ export type SectionSpacer = BaseSection & {
   showDivider?: boolean
 }
 
+export type SectionNewsletterSignup = BaseSection & {
+  _type: 'sectionNewsletterSignup'
+  title?: string
+  subtitle?: string
+  buttonLabel?: string
+  consentLabel?: string
+  successMessage?: string
+}
+
 export type PageSection =
   | SectionHero
   | SectionRichText
@@ -91,6 +100,7 @@ export type PageSection =
   | SectionFaq
   | SectionTestimonials
   | SectionCardGrid
+  | SectionNewsletterSignup
   | SectionSpacer
 
 export type SiteSettings = {

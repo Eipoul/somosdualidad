@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {Button} from '@/components/Button'
 import {Card} from '@/components/Card'
+import {NewsletterForm} from '@/components/NewsletterForm'
 import {FadeIn} from '@/components/FadeIn'
 import {Section} from '@/components/Section'
 import type {PageSection, PortableTextBlock, PortableTextSpan} from '@/lib/sanity/types'
@@ -95,6 +96,18 @@ export function SectionRenderer({sections = []}: SectionRendererProps) {
             return <Section key={section._key || idx} title={section.title} subtitle={section.subtitle}><div className="grid gap-4 md:grid-cols-3">{(section.cards || []).map((card, i: number) => <Card key={card._key || i}><h3 className="font-serif text-2xl">{card.title}</h3><p className="mt-2 text-sm text-foreground/75">{card.description}</p>{card.link?.href ? <Link href={card.link.href} className="mt-4 inline-block text-sm underline">{card.link.label || 'Ver más'}</Link> : null}</Card>)}</div></Section>
           case 'sectionSpacer':
             return <div key={section._key || idx} style={{height: `${section.height || 40}px`}} className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">{section.showDivider ? <hr className="border-accentDark/10" /> : null}</div>
+          case 'sectionNewsletterSignup':
+            return (
+              <Section key={section._key || idx}>
+                <NewsletterForm
+                  title={section.title}
+                  subtitle={section.subtitle}
+                  buttonLabel={section.buttonLabel}
+                  consentLabel={section.consentLabel}
+                  successMessage={section.successMessage}
+                />
+              </Section>
+            )
           default:
             return null
         }

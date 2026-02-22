@@ -1,7 +1,1 @@
-import {draftMode} from 'next/headers'
-import {redirect} from 'next/navigation'
-
-export async function GET() {
-  ;(await draftMode()).disable()
-  redirect('/')
-}
+export {GET} from '@/app/api/draft/disable/route'

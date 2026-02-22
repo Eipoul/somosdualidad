@@ -25,6 +25,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "sanity-visual-editing": [
+        "./sanity/node_modules/@sanity/visual-editing/react"
       ]
     }
   },

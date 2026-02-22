@@ -1,6 +1,6 @@
-# Somos Dualidad · Next.js + Sanity Page Builder
+# Somos Dualidad · Next.js + Sanity Visual Builder
 
-Portal web + CMS para editar contenido completo de `somosdualidad.com` desde Sanity Studio.
+Portal web + CMS con edición visual en vivo para `somosdualidad.com`.
 
 ## Requisitos
 
@@ -9,7 +9,7 @@ Portal web + CMS para editar contenido completo de `somosdualidad.com` desde San
 
 ## Variables de entorno
 
-Crea `.env.local` en la raíz de Next.js:
+### Next.js (`.env.local`)
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://somosdualidad.com
@@ -17,16 +17,17 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=qi7d9rsb
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2025-01-01
 SANITY_API_READ_TOKEN=tu_token_read_para_preview_drafts
-SANITY_PREVIEW_SECRET=tu_secret_compartido_preview
+SANITY_API_WRITE_TOKEN=tu_token_write_para_newsletter
+SANITY_PREVIEW_SECRET=secret_compartido_preview
 ```
 
-Y en el Studio (`sanity/.env` o variables del deploy de Studio):
+### Studio (`sanity/.env`)
 
 ```env
 SANITY_STUDIO_PROJECT_ID=qi7d9rsb
 SANITY_STUDIO_DATASET=production
 SANITY_STUDIO_PREVIEW_URL=https://somosdualidad.com
-SANITY_STUDIO_PREVIEW_SECRET=el_mismo_valor_que_SANITY_PREVIEW_SECRET
+SANITY_STUDIO_PREVIEW_SECRET=el_mismo_secret_de_SANITY_PREVIEW_SECRET
 ```
 
 ## Ejecutar en local
@@ -46,55 +47,96 @@ npm install
 npm run dev
 ```
 
-## Modelo de contenido implementado
+## Cómo funciona el preview visual en vivo
 
-- `siteSettings` (singleton)
-  - identidad de marca
-  - navegación
-  - footer
-  - SEO global
-- `page` (documento por página)
-  - `slug`
-  - `routeType` (`home`, `about`, `resources`, `contact`, `custom`)
-  - `seo`
-  - `sections[]`
+- Sanity usa **Presentation Tool** y abre el sitio real en un iframe.
+- El botón de preview habilita draft mode vía `/api/draft/enable`.
+- El botón para salir lo desactiva vía `/api/draft/disable`.
+- En draft mode, la web consulta Sanity con:
+  - `perspective: "drafts"`
+  - `stega: true`
+  - token de solo lectura
+- Esto permite **click-to-edit overlays**: al hacer click en un bloque del preview se abre el campo correcto en Studio.
 
-### Tipos de sección disponibles
+## Draft mode (publicado vs borrador)
 
-- Hero
-- RichText
-- Image
-- CTA
-- Steps
-- FAQ
-- Testimonials
-- CardGrid / Features
-- Divider / Spacer
+- **Producción normal**: solo contenido publicado (`perspective: "published"`, `useCdn: true`).
+- **Preview/draft mode**: incluye borradores (`perspective: "drafts"`, `useCdn: false`).
+- Endpoints:
+  - `GET /api/draft/enable?secret=...&slug=/ruta`
+  - `GET /api/draft/disable`
+- Compatibilidad legacy mantenida:
+  - `/api/draft-mode/enable`
+  - `/api/draft-mode/disable`
 
-El editor puede agregar, eliminar, reordenar y editar secciones sin tocar código.
+## Dashboard editorial en Sanity
 
-## Cómo editar páginas (equipo editorial - modo fácil)
+La barra lateral del Studio se simplificó para usuarios no técnicos:
 
-1. Entra al Studio (`admin.*`).
-2. En **Site settings** edita navegación, CTA del header y footer.
-3. En **Pages**:
-   - Home: crea/edita una página con `routeType = home`.
-   - Otras páginas: usa slug (`sobre`, `contacto`, etc.).
-4. Dentro de cada página, edita el array `Sections`:
-   - Agrega bloques
-   - Arrastra para reordenar
-   - Elimina los que no uses
-5. Abre **Presentation** (preview en vivo) para revisar cambios sin publicar.
-6. Cuando todo esté correcto, publica con **Publish**.
+1. ⭐ Site Settings
+2. 🏠 Homepage
+3. 🎙️ Podcast Page
+4. 📄 Pages
+5. ⚙️ Global Settings
+6. 📬 Newsletter Subscribers
 
-## Preview y draft mode
+Además:
 
-El Studio Presentation tool está configurado para usar:
+- Se ocultaron tipos técnicos del sidebar principal.
+- Se añadieron descripciones, labels amigables y placeholders en schemas.
+- El constructor de secciones mantiene reorder visual drag-and-drop.
+- Cada tipo de sección tiene icono y preview más descriptivo.
 
-- enable preview: `/api/draft-mode/enable` (si defines secreto en Studio, se envía automáticamente como query param)
-- disable preview: `/api/draft-mode/disable`
+## Newsletter (almacenamiento en Sanity)
 
-En preview se consulta `perspective: drafts` con token read-only (`SANITY_API_READ_TOKEN`).
+### Flujo
+
+1. Editor agrega bloque `Newsletter Signup Section` en una página.
+2. Usuario envía formulario desde frontend.
+3. Next.js recibe `POST /api/newsletter`.
+4. El endpoint guarda/actualiza documento `newsletterSignup` en Sanity dataset.
+
+### Anti-spam incluido
+
+- Honeypot (`website` hidden field).
+- Tiempo mínimo de llenado (`startedAt`).
+- Validación server-side de nombre/email.
+
+### Documento guardado
+
+Tipo: `newsletterSignup`
+
+- `name`
+- `email`
+- `consent` (opcional)
+- `sourcePage`
+- `submittedAt`
+
+## Cómo editar páginas visualmente
+
+1. Entra a Studio.
+2. Abre **Presentation**.
+3. Navega y edita desde el preview visual.
+4. Haz click sobre una sección para saltar al campo correspondiente.
+5. Revisa cambios en tiempo real sin publicar.
+6. Publica cuando esté aprobado.
+
+## Instrucciones para probar live preview
+
+1. Asegura que `SANITY_PREVIEW_SECRET` y `SANITY_STUDIO_PREVIEW_SECRET` coincidan.
+2. Levanta web + Studio en local (o usa deploys en Vercel/Sanity).
+3. En Studio abre Presentation.
+4. Edita texto de una sección sin publicar.
+5. Verifica que el iframe se actualiza al instante.
+6. Haz click en un bloque del preview y valida que te lleve al campo exacto.
+
+## Instrucciones para probar newsletter
+
+1. Inserta bloque `Newsletter Signup Section` en una página y publica la página.
+2. Abre la página en el frontend.
+3. Envía formulario con nombre/email válidos.
+4. Verifica mensaje de éxito.
+5. En Studio abre **Newsletter Subscribers** y confirma el nuevo registro.
 
 ## Build y checks
 
@@ -103,7 +145,3 @@ npm run typecheck
 npm run build
 cd sanity && npm run build
 ```
-
-## Formulario de contacto
-
-Se mantiene `app/api/contact/route.ts` con validación y rate limit simple para formularios.
