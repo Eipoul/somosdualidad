@@ -1,12 +1,11 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export default defineType({
-  name: 'page',
-  title: 'Pages',
+  name: 'homePage',
+  title: 'Homepage',
   type: 'document',
   fields: [
-    defineField({name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required()}),
-    defineField({name: 'slug', title: 'Slug', type: 'slug', options: {source: 'title'}, validation: (Rule) => Rule.required()}),
+    defineField({name: 'title', title: 'Internal title', type: 'string', initialValue: 'Homepage'}),
     defineField({
       name: 'sections',
       title: 'Sections',
@@ -20,6 +19,7 @@ export default defineType({
         defineArrayMember({type: 'sectionCta'}),
       ],
       options: {sortable: true},
+      validation: (Rule) => Rule.min(1),
     }),
     defineField({name: 'seo', title: 'SEO', type: 'seo'}),
   ],
