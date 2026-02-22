@@ -1,96 +1,107 @@
-# Somos Dualidad · Landing Site
+# Somos Dualidad · Next.js + Sanity Page Builder
 
-Sitio web completo para **Somos Dualidad** construido con Next.js 14 (App Router), TypeScript, TailwindCSS, Framer Motion y React Hook Form + Zod.
+Portal web + CMS para editar contenido completo de `somosdualidad.com` desde Sanity Studio.
 
 ## Requisitos
 
 - Node.js 18.18+ (recomendado Node 20)
 - npm 9+
 
-## Correr en local
+## Variables de entorno
+
+Crea `.env.local` en la raíz de Next.js:
+
+```env
+NEXT_PUBLIC_SITE_URL=https://somosdualidad.com
+NEXT_PUBLIC_SANITY_PROJECT_ID=qi7d9rsb
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2025-01-01
+SANITY_API_READ_TOKEN=tu_token_read_para_preview_drafts
+SANITY_PREVIEW_SECRET=tu_secret_compartido_preview
+```
+
+Y en el Studio (`sanity/.env` o variables del deploy de Studio):
+
+```env
+SANITY_STUDIO_PROJECT_ID=qi7d9rsb
+SANITY_STUDIO_DATASET=production
+SANITY_STUDIO_PREVIEW_URL=https://somosdualidad.com
+```
+
+## Ejecutar en local
+
+### Web (Next.js)
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000).
-
-## Scripts
+### Studio (Sanity)
 
 ```bash
-npm run dev       # desarrollo
-npm run build     # build de producción
-npm run start     # correr build
-npm run lint      # lint
-npm run typecheck # verificación TypeScript
+cd sanity
+npm install
+npm run dev
 ```
 
-## Dónde editar contenido (fuente única)
+## Modelo de contenido implementado
 
-Todo el contenido editable está en:
+- `siteSettings` (singleton)
+  - identidad de marca
+  - navegación
+  - footer
+  - SEO global
+- `page` (documento por página)
+  - `slug`
+  - `routeType` (`home`, `about`, `resources`, `contact`, `custom`)
+  - `seo`
+  - `sections[]`
 
-- `content/site.ts`
+### Tipos de sección disponibles
 
-Ahí puedes cambiar:
-
-- navegación
-- hero / manifiesto
-- experiencias
-- testimonios
+- Hero
+- RichText
+- Image
+- CTA
+- Steps
 - FAQ
-- CTA principal/final
-- contacto, redes y links legales
-- SEO base (URL, título, descripción)
+- Testimonials
+- CardGrid / Features
+- Divider / Spacer
 
-> Nota: se usan placeholders `TODO:` para evitar inventar datos reales.
+El editor puede agregar, eliminar, reordenar y editar secciones sin tocar código.
 
-## Formulario de contacto y newsletter
+## Cómo editar páginas (equipo editorial)
 
-- Formulario en `/contacto` usa validación con Zod.
-- CTA final en home envía email de newsletter al mismo endpoint simple.
-- Endpoint: `app/api/contact/route.ts`.
+1. Entra al Studio (`admin.*`).
+2. En **Site settings** edita navegación, CTA del header y footer.
+3. En **Pages**:
+   - Home: crea/edita una página con `routeType = home`.
+   - Otras páginas: usa slug (`sobre`, `contacto`, etc.).
+4. Dentro de cada página, edita el array `Sections`:
+   - Agrega bloques
+   - Arrastra para reordenar
+   - Elimina los que no uses
+5. Publica cambios con **Publish**.
 
-Actualmente el endpoint:
+## Preview y draft mode
 
-- valida y sanitiza datos
-- aplica rate limit básico en memoria
-- registra el payload en consola del servidor (placeholder seguro)
+El Studio Presentation tool está configurado para usar:
 
-### Opcional: envío real de email con Nodemailer
+- enable preview: `/api/draft-mode/enable`
+- disable preview: `/api/draft-mode/disable`
 
-1. Instala dependencia:
+En preview se consulta `perspective: drafts` con token read-only (`SANITY_API_READ_TOKEN`).
+
+## Build y checks
 
 ```bash
-npm install nodemailer
+npm run typecheck
+npm run build
+cd sanity && npm run build
 ```
 
-2. Agrega variables en `.env.local`:
+## Formulario de contacto
 
-```env
-SMTP_HOST=smtp.tu-proveedor.com
-SMTP_PORT=587
-SMTP_USER=tu_usuario
-SMTP_PASS=tu_password
-CONTACT_TO=correo@tudominio.com
-```
-
-3. Reemplaza en `app/api/contact/route.ts` el bloque `console.info` por el envío SMTP.
-
-Si no deseas backend de correo, mantén el fallback `mailto:` ya incluido en UI.
-
-## SEO implementado
-
-- Metadata global y por página
-- OpenGraph dinámico en `app/opengraph-image.tsx`
-- `app/robots.ts`
-- `app/sitemap.ts`
-- icono placeholder en `app/icon.tsx`
-
-## Accesibilidad y rendimiento
-
-- navegación por teclado + skip link
-- foco visible en elementos interactivos
-- acordeón FAQ con `aria-expanded` y regiones enlazadas
-- `next/font` para tipografías optimizadas
-- layout mobile-first + Tailwind utility classes
+Se mantiene `app/api/contact/route.ts` con validación y rate limit simple para formularios.
