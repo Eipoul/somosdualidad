@@ -7,17 +7,19 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "payload": "payload"
   },
   "dependencies": {
-    "@sanity/client": "^7.15.0",
+    "@payloadcms/db-postgres": "^3.0.0",
+    "@payloadcms/next": "^3.0.0",
+    "@payloadcms/richtext-lexical": "^3.0.0",
     "framer-motion": "^11.11.7",
-    "groq": "^5.10.0",
     "next": "14.2.15",
+    "payload": "^3.0.0",
+    "pg": "^8.13.1",
     "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-hook-form": "^7.53.0",
-    "zod": "^3.23.8"
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@types/node": "^22.7.5",
