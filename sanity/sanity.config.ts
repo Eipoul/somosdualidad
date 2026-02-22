@@ -9,8 +9,8 @@ const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:30
 const previewSecret = process.env.SANITY_STUDIO_PREVIEW_SECRET
 
 const enableDraftModePath = previewSecret
-  ? `/api/draft-mode/enable?secret=${encodeURIComponent(previewSecret)}`
-  : '/api/draft-mode/enable'
+  ? `/api/draft/enable?secret=${encodeURIComponent(previewSecret)}`
+  : '/api/draft/enable'
 
 export default defineConfig({
   name: 'default',
@@ -24,7 +24,7 @@ export default defineConfig({
         origin: previewUrl,
         previewMode: {
           enable: enableDraftModePath,
-          disable: '/api/draft-mode/disable',
+          disable: '/api/draft/disable',
         },
       },
     }),

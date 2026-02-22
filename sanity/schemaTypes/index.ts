@@ -9,6 +9,7 @@ import {
   sectionFaq,
   sectionHero,
   sectionImage,
+  sectionNewsletterSignup,
   sectionRichText,
   sectionSpacer,
   sectionSteps,
@@ -18,6 +19,7 @@ import {
 import page from './page'
 import post from './post'
 import siteSettings from './siteSettings'
+import newsletterSignup from './newsletterSignup'
 
 export const schemaTypes = [
   author,
@@ -30,6 +32,7 @@ export const schemaTypes = [
   sectionHero,
   sectionRichText,
   sectionImage,
+  sectionNewsletterSignup,
   sectionCta,
   sectionSteps,
   sectionFaq,
@@ -38,4 +41,5 @@ export const schemaTypes = [
   sectionSpacer,
   siteSettings,
   page,
+  newsletterSignup,
 ]

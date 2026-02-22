@@ -1,7 +1,9 @@
 import type {Metadata} from 'next'
+import {draftMode} from 'next/headers'
 import {Inter, Playfair_Display} from 'next/font/google'
 import {Footer} from '@/components/Footer'
 import {Header} from '@/components/Header'
+import {VisualEditing} from '@/components/VisualEditing'
 import {SITE_SETTINGS_QUERY} from '@/lib/sanity/queries'
 import {sanityFetch} from '@/lib/sanity/client'
 import type {SiteSettings} from '@/lib/sanity/types'
@@ -30,6 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
+  const {isEnabled: isDraftMode} = await draftMode()
   const settings = await sanityFetch<SiteSettings | null>({query: SITE_SETTINGS_QUERY})
 
   return (
@@ -39,6 +42,7 @@ export default async function RootLayout({children}: Readonly<{children: React.R
         <Header settings={settings} />
         <main id="contenido">{children}</main>
         <Footer settings={settings} />
+        {isDraftMode ? <VisualEditing /> : null}
       </body>
     </html>
   )
