@@ -9,6 +9,9 @@ export async function GET(request: NextRequest) {
   const previewSecret = process.env.SANITY_PREVIEW_SECRET || process.env.SANITY_STUDIO_PREVIEW_SECRET
 
   if (previewSecret && secret !== previewSecret) {
+  const previewSecret = process.env.SANITY_PREVIEW_SECRET
+
+  if (!previewSecret || secret !== previewSecret) {
     return new Response('Invalid secret', {status: 401})
   }
 
