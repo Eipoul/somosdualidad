@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { EpisodeCard } from '@/lib/adapters/episodeCard'
 import { NewsletterForm } from './NewsletterForm'
 
 type Block = {
@@ -11,8 +12,6 @@ type Block = {
   content?: string
   description?: string
 }
-type EpisodeCard = { id: string; slug: string; title: string; description?: string; publishDate: string }
-
 export function SectionRenderer({ blocks, episodes }: { blocks: Block[]; episodes: EpisodeCard[] }) {
   return (
     <>
