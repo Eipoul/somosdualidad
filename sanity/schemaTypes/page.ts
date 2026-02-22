@@ -4,20 +4,35 @@ export default defineType({
   name: 'page',
   title: 'Páginas',
   type: 'document',
+  fieldsets: [
+    {name: 'basics', title: 'Paso 1: Datos básicos', options: {collapsible: true, collapsed: false}},
+    {name: 'seo', title: 'Paso 3 (opcional): SEO', options: {collapsible: true, collapsed: true}},
+  ],
   fields: [
-    defineField({name: 'title', title: 'Título de la página', type: 'string', validation: (Rule) => Rule.required()}),
+    defineField({
+      name: 'title',
+      title: 'Título de la página',
+      type: 'string',
+      description: 'Ejemplo: Inicio, Sobre nosotros, Contacto.',
+      fieldset: 'basics',
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: 'slug',
       title: 'URL (slug)',
       type: 'slug',
+      description: 'Dirección de la página. Se genera automáticamente desde el título, pero puedes editarla.',
+      fieldset: 'basics',
       options: {source: 'title', maxLength: 96},
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'routeType',
       title: 'Tipo de página',
+      description: 'Selecciona “Inicio” solo para la home principal. Para las demás, usa “Personalizada”.',
       type: 'string',
       initialValue: 'custom',
+      fieldset: 'basics',
       options: {
         list: [
           {title: 'Inicio', value: 'home'},
@@ -28,10 +43,11 @@ export default defineType({
         ],
       },
     }),
-    defineField({name: 'seo', title: 'SEO (opcional)', type: 'seo'}),
     defineField({
       name: 'sections',
-      title: 'Bloques de contenido',
+      title: 'Paso 2: Bloques de contenido (constructor visual)',
+      description:
+        'Agrega bloques, rellena el contenido y arrastra para reordenar. Puedes abrir Presentation para ver cambios en vivo sin publicar.',
       type: 'array',
       of: [
         defineArrayMember({type: 'sectionHero'}),
@@ -45,6 +61,13 @@ export default defineType({
         defineArrayMember({type: 'sectionSpacer'}),
       ],
       validation: (Rule) => Rule.min(1),
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO (opcional)',
+      type: 'seo',
+      fieldset: 'seo',
+      description: 'Solo para Google y redes sociales. Si no sabes qué poner, puedes dejarlo vacío.',
     }),
   ],
   preview: {

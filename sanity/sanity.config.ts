@@ -6,6 +6,11 @@ import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
 
 const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
+const previewSecret = process.env.SANITY_STUDIO_PREVIEW_SECRET
+
+const enableDraftModePath = previewSecret
+  ? `/api/draft-mode/enable?secret=${encodeURIComponent(previewSecret)}`
+  : '/api/draft-mode/enable'
 
 export default defineConfig({
   name: 'default',
@@ -18,7 +23,7 @@ export default defineConfig({
       previewUrl: {
         origin: previewUrl,
         previewMode: {
-          enable: '/api/draft-mode/enable',
+          enable: enableDraftModePath,
           disable: '/api/draft-mode/disable',
         },
       },
