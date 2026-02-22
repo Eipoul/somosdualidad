@@ -10,6 +10,18 @@ const writeClient = createClient({
   useCdn: false,
 })
 
+const RATE_LIMIT_WINDOW_MS = 60_000
+const RATE_LIMIT_MAX_REQUESTS = 5
+const requestLog = new Map<string, number[]>()
+
+function hasExceededRateLimit(ip: string) {
+  const now = Date.now()
+  const history = requestLog.get(ip)?.filter((time) => now - time < RATE_LIMIT_WINDOW_MS) || []
+  history.push(now)
+  requestLog.set(ip, history)
+  return history.length > RATE_LIMIT_MAX_REQUESTS
+}
+
 export async function POST(request: NextRequest) {
   if (!process.env.SANITY_API_WRITE_TOKEN) {
     return NextResponse.json({error: 'Newsletter storage is not configured.'}, {status: 500})
@@ -24,6 +36,12 @@ export async function POST(request: NextRequest) {
     startedAt?: number
   }
 
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+
+  if (hasExceededRateLimit(ip)) {
+    return NextResponse.json({error: 'Too many requests. Please try again in one minute.'}, {status: 429})
+  }
+
   if (body.hpField) return NextResponse.json({ok: true})
   if (body.startedAt && Date.now() - body.startedAt < 2000) {
     return NextResponse.json({error: 'Spam protection triggered.'}, {status: 429})
@@ -36,17 +54,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({error: 'Invalid payload.'}, {status: 400})
   }
 
-  const ip = request.headers.get('x-forwarded-for') || 'unknown'
   const requestHash = createHash('sha256').update(`${email}|${ip}`).digest('hex').slice(0, 20)
 
   await writeClient.createOrReplace({
-    _id: `newsletterSignup.${requestHash}`,
-    _type: 'newsletterSignup',
+    _id: `newsletterSubscriber.${requestHash}`,
+    _type: 'newsletterSubscriber',
     name,
     email,
     consent: Boolean(body.consent),
     sourcePage: body.sourcePage || '/',
-    submittedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
   })
 
   return NextResponse.json({ok: true})
