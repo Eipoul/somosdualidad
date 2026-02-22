@@ -5,21 +5,7 @@ import {structureTool} from 'sanity/structure'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
 
-const SITE_URL_FALLBACK = 'https://somosdualidad.com'
-
-function getPreviewBaseUrl() {
-  const configured = process.env.SANITY_STUDIO_PREVIEW_URL || SITE_URL_FALLBACK
-
-  try {
-    const parsed = new URL(configured)
-    if (parsed.pathname.startsWith('/api/')) return parsed.origin
-    return `${parsed.origin}${parsed.pathname === '/' ? '' : parsed.pathname}`
-  } catch {
-    return SITE_URL_FALLBACK
-  }
-}
-
-const previewBaseUrl = getPreviewBaseUrl()
+const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL || 'https://somosdualidad.com'
 const previewSecret = process.env.SANITY_PREVIEW_SECRET || process.env.SANITY_STUDIO_PREVIEW_SECRET
 
 export default defineConfig({

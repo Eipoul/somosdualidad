@@ -69,18 +69,6 @@ Rules:
 - Presentation preview mode calls `/api/draft/enable` and `/api/draft/disable`.
 - If iframe cookies are blocked by browser privacy (cross-domain Studio/Site), use **Open in new window**.
 
-### Troubleshooting: “Invalid secret” in Presentation
-
-If you see `Invalid secret`, verify all of these:
-
-1. `SANITY_PREVIEW_SECRET` is set in **both** Vercel projects (web + studio) with the same exact value.
-2. `SANITY_STUDIO_PREVIEW_URL` is a real site URL (e.g. `https://somosdualidad.com`), **not** `/api/draft/enable`.
-3. Open this directly and confirm it redirects with 307:
-   - `https://somosdualidad.com/api/draft/enable?secret=YOUR_SECRET&redirect=/`
-4. In Studio Presentation, use refresh/reload after env changes (a new deployment may be required).
-
-Note: the draft enable route accepts `SANITY_PREVIEW_SECRET` (canonical) and also `SANITY_STUDIO_PREVIEW_SECRET` as a temporary compatibility fallback.
-
 ## Newsletter storage
 
 Endpoint:
