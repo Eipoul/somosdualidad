@@ -1,8 +1,13 @@
 import { notFound } from 'next/navigation'
 import { getEpisode } from '@/lib/payload/content'
 
-export default async function EpisodeDetailPage({ params }: { params: { slug: string } }) {
-  const episode = await getEpisode(params.slug)
+type EpisodeDetailPageProps = {
+  params: Promise<{ slug: string }>
+}
+
+export default async function EpisodeDetailPage({ params }: EpisodeDetailPageProps) {
+  const { slug } = await params
+  const episode = await getEpisode(slug)
   if (!episode) notFound()
 
   return (

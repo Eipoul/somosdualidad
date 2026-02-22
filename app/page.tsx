@@ -5,7 +5,7 @@ import { getEpisodes, getPageBySlug } from '@/lib/payload/content'
 import { draftMode } from 'next/headers'
 
 export default async function HomePage() {
-  const { isEnabled } = draftMode()
+  const { isEnabled } = await draftMode()
   const [page, episodes] = await Promise.all([getPageBySlug('/', isEnabled), getEpisodes(6)])
 
   const fallbackBlocks = [
