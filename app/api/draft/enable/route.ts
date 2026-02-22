@@ -1,4 +1,3 @@
-return new Response('ENABLE OK - NEW DEPLOY', { status: 200 })
 import { draftMode } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -7,8 +6,10 @@ export const dynamic = 'force-dynamic'
 
 export function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    // Watermark (optional): uncomment for testing
+    // return new NextResponse('ENABLE OK - NEW DEPLOY', { status: 200 })
 
+    const { searchParams } = new URL(request.url)
     const secret = searchParams.get('secret') || ''
     const redirectTo = searchParams.get('redirect') || '/'
 
@@ -17,6 +18,7 @@ export function GET(request: NextRequest) {
     if (!previewSecret) {
       return new NextResponse('SANITY_PREVIEW_SECRET is MISSING on server', { status: 401 })
     }
+
     if (secret !== previewSecret) {
       return new NextResponse('SANITY_PREVIEW_SECRET is SET but does NOT MATCH', { status: 401 })
     }
