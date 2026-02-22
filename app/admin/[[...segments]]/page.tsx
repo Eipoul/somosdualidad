@@ -1,14 +1,24 @@
 import config from '@/payload.config'
 import { RootPage, generatePageMetadata } from '@payloadcms/next/views'
 
-type PayloadPageProps = {
-  params: Record<string, string | string[] | undefined>
-  searchParams: Record<string, string | string[] | undefined>
+type AdminPageProps = {
+  params?: {
+    segments?: string[]
+  }
+  searchParams?: Record<string, string | string[] | undefined>
 }
 
-export const generateMetadata = ({ params, searchParams }: PayloadPageProps) =>
-  generatePageMetadata({ config, params, searchParams })
+export const generateMetadata = ({ params, searchParams }: AdminPageProps) =>
+  generatePageMetadata({
+    config,
+    params: params ?? {},
+    searchParams: searchParams ?? {},
+  })
 
-const Page = ({ params, searchParams }: PayloadPageProps) => RootPage({ config, params, searchParams })
-
-export default Page
+export default function Page({ params, searchParams }: AdminPageProps) {
+  return RootPage({
+    config,
+    params: params ?? {},
+    searchParams: searchParams ?? {},
+  })
+}
