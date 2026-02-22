@@ -30,6 +30,8 @@ NEXT_PUBLIC_BUILDER_EDITOR_URL=https://builder.io/content
 NEXT_PUBLIC_SANITY_STUDIO_URL=https://admin.somosdualidad.com/studio
 ```
 
+> `SANITY_API_READ_TOKEN` solo se usa cuando `draftMode` está activo (preview). En modo normal de producción no se envía token al cliente de lectura.
+
 ### Studio (`sanity/.env`)
 
 ```env
@@ -110,3 +112,69 @@ npm run typecheck
 npm run build
 cd sanity && npm run build
 ```
+
+## Sanity Presentation + Visual Editing (online)
+
+Configuración recomendada para evitar previews rotos o iframes atascados:
+
+1. **Presentation debe abrir páginas del sitio**, no endpoints API:
+   - `SANITY_STUDIO_PREVIEW_URL=https://somosdualidad.com`
+2. **Draft Mode se activa por endpoint dedicado**:
+   - `/api/draft/enable?secret=...&redirect=/ruta`
+3. **Draft Mode se desactiva con**:
+   - `/api/draft/disable` (o `/api/draft/disable?redirect=/ruta`)
+
+### Variables de entorno obligatorias
+
+#### Web (Next.js)
+
+```env
+NEXT_PUBLIC_SITE_URL=https://somosdualidad.com
+SANITY_PREVIEW_SECRET=shared_preview_secret
+SANITY_API_READ_TOKEN=token_read_preview # requerido para leer drafts
+```
+
+#### Studio (Sanity)
+
+```env
+SANITY_STUDIO_PREVIEW_URL=https://somosdualidad.com
+SANITY_STUDIO_PREVIEW_SECRET=shared_preview_secret # debe coincidir con SANITY_PREVIEW_SECRET
+```
+
+### CORS y orígenes requeridos en Sanity Manage
+
+Añade estos orígenes en **API > CORS Origins**:
+
+- `https://admin.somosdualidad.com`
+- `https://somosdualidad.com`
+- (opcional) dominios de preview de Vercel usados por el equipo
+
+Si Sanity lo solicita para flujos de sesión/preview embebido, habilita **Allow credentials** para los orígenes del Studio y Website.
+
+### Si el preview se queda en loading (Safari/Firefox con privacy estricta)
+
+Algunos navegadores bloquean cookies third-party dentro del iframe cuando Studio y Site están en dominios distintos.
+
+Fallback recomendado para editores:
+
+1. En Presentation, usar el botón **Open in new window** (icono externo arriba a la derecha).
+2. Continuar preview en esa pestaña (top-level), donde las cookies de Draft Mode sí suelen persistir.
+
+Best practice: mantener Studio y Website en dominios de la misma organización y CORS configurado explícitamente.
+
+### Preview health check (local o producción)
+
+1. Abrir:
+   - `/api/draft/enable?secret=TU_SECRET&redirect=/`
+2. Verificar que redirige al home con Draft Mode activo.
+3. Abrir:
+   - `/api/draft/disable`
+4. Verificar que redirige a `/` y limpia Draft Mode.
+
+### Builder preview hardening (para no interferir con Sanity)
+
+- Mantener preview URL de Builder apuntando al sitio desplegado (no localhost en producción):
+  - `https://somosdualidad.com/api/builder/preview?url={{url}}&secret=BUILDER_PREVIEW_SECRET`
+- Mantener secretos separados:
+  - `BUILDER_PREVIEW_SECRET` (Builder)
+  - `SANITY_PREVIEW_SECRET` (Sanity)

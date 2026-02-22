@@ -5,12 +5,10 @@ import {structureTool} from 'sanity/structure'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
 
-const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
+const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL || (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://somosdualidad.com')
 const previewSecret = process.env.SANITY_STUDIO_PREVIEW_SECRET
 
-const enableDraftModePath = previewSecret
-  ? `/api/draft/enable?secret=${encodeURIComponent(previewSecret)}`
-  : '/api/draft/enable'
+const enableDraftModePath = `/api/draft/enable${previewSecret ? `?secret=${encodeURIComponent(previewSecret)}` : ''}`
 
 export default defineConfig({
   name: 'default',
@@ -21,7 +19,7 @@ export default defineConfig({
     structureTool({structure}),
     presentationTool({
       previewUrl: {
-        origin: previewUrl,
+        initial: previewUrl,
         previewMode: {
           enable: enableDraftModePath,
           disable: '/api/draft/disable',

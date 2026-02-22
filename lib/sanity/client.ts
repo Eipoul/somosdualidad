@@ -23,6 +23,10 @@ export const createSanityClient = (preview = false) =>
 export async function sanityFetch<QueryResponse>({query, params = {}}: {query: string; params?: QueryParams}) {
   const preview = (await draftMode()).isEnabled
 
+  if (preview && !process.env.SANITY_API_READ_TOKEN) {
+    throw new Error('Draft mode requires SANITY_API_READ_TOKEN to fetch draft content from Sanity')
+  }
+
   return createSanityClient(preview).fetch<QueryResponse>(query, params, {
     next: preview ? {revalidate: 0} : {revalidate: 60},
   })
