@@ -17,7 +17,7 @@ export default defineConfig({
     structureTool({structure}),
     presentationTool({
       previewUrl: {
-        initial: previewUrl,
+        initial: previewBaseUrl,
         previewMode: {
           enable: `/api/draft/enable${previewSecret ? `?secret=${encodeURIComponent(previewSecret)}&redirect=/` : ''}`,
           disable: '/api/draft/disable?redirect=/',
