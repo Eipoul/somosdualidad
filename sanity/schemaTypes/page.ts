@@ -2,36 +2,36 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'page',
-  title: 'Pages',
+  title: 'Páginas',
   type: 'document',
   fields: [
-    defineField({name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required()}),
+    defineField({name: 'title', title: 'Título de la página', type: 'string', validation: (Rule) => Rule.required()}),
     defineField({
       name: 'slug',
-      title: 'Slug',
+      title: 'URL (slug)',
       type: 'slug',
       options: {source: 'title', maxLength: 96},
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'routeType',
-      title: 'Route type',
+      title: 'Tipo de página',
       type: 'string',
       initialValue: 'custom',
       options: {
         list: [
-          {title: 'Home', value: 'home'},
-          {title: 'About', value: 'about'},
-          {title: 'Podcast / Resources', value: 'resources'},
-          {title: 'Contact', value: 'contact'},
-          {title: 'Custom', value: 'custom'},
+          {title: 'Inicio', value: 'home'},
+          {title: 'Sobre nosotros', value: 'about'},
+          {title: 'Podcast / Recursos', value: 'resources'},
+          {title: 'Contacto', value: 'contact'},
+          {title: 'Personalizada', value: 'custom'},
         ],
       },
     }),
-    defineField({name: 'seo', title: 'SEO overrides', type: 'seo'}),
+    defineField({name: 'seo', title: 'SEO (opcional)', type: 'seo'}),
     defineField({
       name: 'sections',
-      title: 'Sections',
+      title: 'Bloques de contenido',
       type: 'array',
       of: [
         defineArrayMember({type: 'sectionHero'}),

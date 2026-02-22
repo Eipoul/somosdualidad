@@ -1,10 +1,12 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import {Button} from '@/components/Button'
 import {Card} from '@/components/Card'
 import {FadeIn} from '@/components/FadeIn'
 import {Section} from '@/components/Section'
+import type {PageSection, PortableTextBlock, PortableTextSpan} from '@/lib/sanity/types'
 
-type SectionRendererProps = {sections?: Array<Record<string, any>>}
+type SectionRendererProps = {sections?: PageSection[]}
 
 function AbstractHeroVisual() {
   return (
@@ -16,10 +18,10 @@ function AbstractHeroVisual() {
   )
 }
 
-function portableToText(blocks: any[] = []) {
+function portableToText(blocks: PortableTextBlock[] = []) {
   return blocks
     .filter((b) => b?._type === 'block')
-    .map((b) => (b.children || []).map((child: any) => child.text).join(''))
+    .map((b) => (b.children || []).map((child: PortableTextSpan) => child.text || '').join(''))
     .join('\n')
 }
 
@@ -57,7 +59,7 @@ export function SectionRenderer({sections = []}: SectionRendererProps) {
           case 'sectionImage':
             return (
               <Section key={section._key || idx}>
-                {section.image?.asset?.url ? <img src={section.image.asset.url} alt={section.alt || ''} className="w-full rounded-3xl" /> : null}
+                {section.image?.asset?.url ? <Image src={section.image.asset.url} alt={section.alt || ''} width={1600} height={900} className="h-auto w-full rounded-3xl" /> : null}
                 {section.caption ? <p className="mt-2 text-sm text-foreground/70">{section.caption}</p> : null}
               </Section>
             )
@@ -75,7 +77,7 @@ export function SectionRenderer({sections = []}: SectionRendererProps) {
             return (
               <Section key={section._key || idx} title={section.title}>
                 <div className="grid gap-4 md:grid-cols-3">
-                  {(section.items || []).map((item: any, itemIdx: number) => (
+                  {(section.items || []).map((item, itemIdx: number) => (
                     <Card key={item._key || itemIdx}><p className="mb-3 text-xs uppercase tracking-[0.2em] text-accentDark/70">Paso {itemIdx + 1}</p><h3 className="font-serif text-2xl">{item.title}</h3><p className="mt-2 text-sm text-foreground/75">{item.description}</p></Card>
                   ))}
                 </div>
@@ -84,13 +86,13 @@ export function SectionRenderer({sections = []}: SectionRendererProps) {
           case 'sectionFaq':
             return (
               <Section key={section._key || idx} title={section.title || 'Preguntas frecuentes'} className="bg-white/50">
-                <div className="mt-6 space-y-3">{(section.items || []).map((item: any, i: number) => <details key={item._key || i} className="rounded-lg border p-4"><summary className="cursor-pointer font-medium">{item.q}</summary><p className="mt-2 text-foreground/75">{item.a}</p></details>)}</div>
+                <div className="mt-6 space-y-3">{(section.items || []).map((item, i: number) => <details key={item._key || i} className="rounded-lg border p-4"><summary className="cursor-pointer font-medium">{item.q}</summary><p className="mt-2 text-foreground/75">{item.a}</p></details>)}</div>
               </Section>
             )
           case 'sectionTestimonials':
-            return <Section key={section._key || idx} title={section.title}><div className="grid gap-4 md:grid-cols-3">{(section.items || []).map((item: any, i: number) => <Card key={item._key || i}><p className="text-sm leading-relaxed text-foreground/80">“{item.quote}”</p><p className="mt-4 text-sm font-medium">{item.name}</p><p className="text-xs text-foreground/65">{item.role}</p></Card>)}</div></Section>
+            return <Section key={section._key || idx} title={section.title}><div className="grid gap-4 md:grid-cols-3">{(section.items || []).map((item, i: number) => <Card key={item._key || i}><p className="text-sm leading-relaxed text-foreground/80">“{item.quote}”</p><p className="mt-4 text-sm font-medium">{item.name}</p><p className="text-xs text-foreground/65">{item.role}</p></Card>)}</div></Section>
           case 'sectionCardGrid':
-            return <Section key={section._key || idx} title={section.title} subtitle={section.subtitle}><div className="grid gap-4 md:grid-cols-3">{(section.cards || []).map((card: any, i: number) => <Card key={card._key || i}><h3 className="font-serif text-2xl">{card.title}</h3><p className="mt-2 text-sm text-foreground/75">{card.description}</p>{card.link?.href ? <Link href={card.link.href} className="mt-4 inline-block text-sm underline">{card.link.label || 'Ver más'}</Link> : null}</Card>)}</div></Section>
+            return <Section key={section._key || idx} title={section.title} subtitle={section.subtitle}><div className="grid gap-4 md:grid-cols-3">{(section.cards || []).map((card, i: number) => <Card key={card._key || i}><h3 className="font-serif text-2xl">{card.title}</h3><p className="mt-2 text-sm text-foreground/75">{card.description}</p>{card.link?.href ? <Link href={card.link.href} className="mt-4 inline-block text-sm underline">{card.link.label || 'Ver más'}</Link> : null}</Card>)}</div></Section>
           case 'sectionSpacer':
             return <div key={section._key || idx} style={{height: `${section.height || 40}px`}} className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">{section.showDivider ? <hr className="border-accentDark/10" /> : null}</div>
           default:
