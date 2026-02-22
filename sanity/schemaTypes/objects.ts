@@ -1,4 +1,4 @@
-import {BoltIcon, ComposeIcon, LinkIcon, QuestionMarkCircleIcon, SparklesIcon, UsersIcon} from '@sanity/icons'
+import {BoltIcon, ComposeIcon, LinkIcon, HelpCircleIcon, SparklesIcon, UsersIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export const linkObject = defineType({
@@ -65,7 +65,7 @@ export const sectionFaq = defineType({
   name: 'sectionFaq',
   title: 'FAQ',
   type: 'object',
-  icon: QuestionMarkCircleIcon,
+  icon: HelpCircleIcon,
   fields: [
     defineField({name: 'title', title: 'Title', type: 'string'}),
     defineField({
