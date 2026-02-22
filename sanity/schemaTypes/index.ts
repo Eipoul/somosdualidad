@@ -1,15 +1,41 @@
-import interview from "./interview";
-import pageHome from "./pageHome";
-import blocksHero from "./blocksHero";
-import blocksText from "./blocksText";
-import blocksFaq from "./blocksFaq";
-import blocksCta from "./blocksCta";
+import author from './author'
+import blockContent from './blockContent'
+import category from './category'
+import interview from './interview'
+import {
+  linkObject,
+  sectionCardGrid,
+  sectionCta,
+  sectionFaq,
+  sectionHero,
+  sectionImage,
+  sectionRichText,
+  sectionSpacer,
+  sectionSteps,
+  sectionTestimonials,
+  seoObject,
+} from './objects'
+import page from './page'
+import post from './post'
+import siteSettings from './siteSettings'
 
 export const schemaTypes = [
+  author,
+  category,
+  post,
   interview,
-  pageHome,
-  blocksHero,
-  blocksText,
-  blocksFaq,
-  blocksCta,
-];
+  blockContent,
+  linkObject,
+  seoObject,
+  sectionHero,
+  sectionRichText,
+  sectionImage,
+  sectionCta,
+  sectionSteps,
+  sectionFaq,
+  sectionTestimonials,
+  sectionCardGrid,
+  sectionSpacer,
+  siteSettings,
+  page,
+]
