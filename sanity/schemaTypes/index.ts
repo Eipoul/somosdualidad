@@ -20,6 +20,10 @@ import page from './page'
 import post from './post'
 import siteSettings from './siteSettings'
 import newsletterSignup from './newsletterSignup'
+import season from './season'
+import episode from './episode'
+import globalSettings from './globalSettings'
+import newsletterSubscriber from './newsletterSubscriber'
 
 export const schemaTypes = [
   author,
@@ -42,4 +46,8 @@ export const schemaTypes = [
   siteSettings,
   page,
   newsletterSignup,
+  season,
+  episode,
+  globalSettings,
+  newsletterSubscriber,
 ]

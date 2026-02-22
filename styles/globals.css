@@ -36,3 +36,12 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+.builder-page {
+  min-height: 60vh;
+}
+
+.builder-page img {
+  max-width: 100%;
+  height: auto;
+}
