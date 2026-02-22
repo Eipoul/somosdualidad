@@ -1,14 +1,10 @@
-import type { MetadataRoute } from "next";
-import { siteContent } from "@/content/site";
+import type { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = siteContent.seo.siteUrl.replace("TODO: ", "https://example.com");
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://somosdualidad.com'
 
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/"
-    },
-    sitemap: `${siteUrl}/sitemap.xml`
-  };
+    rules: [{ userAgent: '*', allow: '/' }],
+    sitemap: `${baseUrl}/sitemap.xml`,
+  }
 }

@@ -1,90 +1,92 @@
-# Somos Dualidad · Next.js 14 + Sanity
+# Somos Dualidad · Rebuild con Next.js + Payload CMS
 
-Sanity is the only CMS/page builder for the website.
+Arquitectura única recomendada (opción 1): **un solo proyecto Next.js** que sirve sitio público y admin Payload.
 
-## Required environment variables
+- `https://somosdualidad.com` → web pública
+- `https://admin.somosdualidad.com` → panel admin (ruta `/admin` del mismo deploy)
 
-### Web app (Vercel project: `somosdualidad.com`)
+## Variables de entorno
+
+Reutilizamos el nombre actual:
 
 ```env
 NEXT_PUBLIC_SITE_URL=https://somosdualidad.com
-NEXT_PUBLIC_SANITY_PROJECT_ID=qi7d9rsb
-NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SANITY_API_VERSION=2025-01-01
-
-SANITY_API_READ_TOKEN=***
-SANITY_API_WRITE_TOKEN=***
-SANITY_PREVIEW_SECRET=***
-
-NEXT_PUBLIC_SANITY_STUDIO_URL=https://admin.somosdualidad.com/studio
 ```
 
-### Studio deployment (Vercel project: `admin.somosdualidad.com`)
+Nuevas variables requeridas:
 
 ```env
-SANITY_STUDIO_PROJECT_ID=qi7d9rsb
-SANITY_STUDIO_DATASET=production
-SANITY_STUDIO_PREVIEW_URL=https://somosdualidad.com
-SANITY_PREVIEW_SECRET=***
+DATABASE_URI=postgres://...
+PAYLOAD_SECRET=...
+PREVIEW_SECRET=... # opcional
 ```
 
-> Use the same value for `SANITY_PREVIEW_SECRET` in both deployments.
+Compatibilidad con configuración previa:
 
-## Content model
+- Si `PREVIEW_SECRET` no está definido, el sistema usa `SANITY_PREVIEW_SECRET` automáticamente.
+- Las variables de Sanity existentes pueden permanecer en Vercel, pero ya no se usan.
 
-- Singleton documents
-  - `siteSettings`
-  - `homePage`
-- Collections
-  - `page`
-  - `episode`
-  - `season`
-  - `newsletterSubscriber`
-- Home/page builder section blocks
-  - Hero
-  - Quiénes Somos
-  - Episodios
-  - Suscríbete
-  - FAQ
-  - CTA
+## Modelos de contenido (Payload)
 
-Editors can add/remove/reorder sections in Sanity.
+- Global: **Ajustes del sitio** (`site-settings`)
+- Collections:
+  - **Páginas** (`pages`) con bloques reordenables
+  - **Episodios** (`episodes`)
+  - **Temporadas** (`seasons`)
+  - **Suscriptores** (`subscribers`)
+  - **Usuarios admin** (`users`)
 
-## Preview and Draft Mode
+### Bloques de página
 
-Draft endpoints:
+- Hero
+- RichText
+- SplitSection
+- EpisodesSection
+- AboutSection
+- SubscribeSection
+- FAQ
+- CTA
+- Spacer
 
-- `GET /api/draft/enable?secret=...&redirect=/ruta`
-- `GET /api/draft/disable?redirect=/ruta`
+## Preview de borradores
 
-Rules:
+- Payload habilita drafts en `pages` y `episodes`.
+- Endpoint estable para activar preview: `GET /api/preview?slug=/ruta&secret=...`
+- Secret resuelto en este orden:
+  1. `PREVIEW_SECRET`
+  2. `SANITY_PREVIEW_SECRET`
 
-- Secret is validated only against `SANITY_PREVIEW_SECRET`.
-- Valid request enables draft mode and responds with `307` redirect.
-- Missing/invalid secret returns `401 Invalid secret`.
+Esto permite mantener la configuración actual de Vercel sin romper preview.
 
-### Presentation Tool setup
+## Newsletter
 
-- Presentation iframe must point to a real page URL (`SANITY_STUDIO_PREVIEW_URL`), not API routes.
-- Presentation preview mode calls `/api/draft/enable` and `/api/draft/disable`.
-- If iframe cookies are blocked by browser privacy (cross-domain Studio/Site), use **Open in new window**.
+Endpoint público:
 
-## Newsletter storage
+- `POST /api/subscribe`
 
-Endpoint:
+Incluye:
 
-- `POST /api/newsletter/subscribe`
+- honeypot (`website`)
+- rate limit básico en memoria por IP
+- guardado en colección `subscribers` (email único)
 
-Behavior:
+## Flujo editorial (no técnico)
 
-- Validates email format.
-- Honeypot + lightweight rate-limiting.
-- Idempotent storage in Sanity (`newsletterSubscriber.<email-safe-id>` via `createOrReplace`).
+1. Entrar a `admin.somosdualidad.com`.
+2. Ir a **Páginas** y abrir la página con slug `/` para editar homepage por bloques.
+3. Reordenar bloques, editar copys y guardar draft/publicar.
+4. Ir a **Episodios** para crear y publicar episodios.
+5. Ir a **Suscriptores** para revisar/exportar la base de newsletter.
 
-## Editor workflow
+## Deploy en Vercel
 
-1. Open Sanity Studio.
-2. Edit **Site Settings** for nav/footer/global copy.
-3. Edit **Homepage** sections (add/reorder/remove).
-4. Open **Presentation** and preview drafts before publishing.
-5. Review new records in **Newsletter Subscribers** after form submissions.
+1. Usar un solo proyecto Vercel apuntando a este repo.
+2. Configurar dominios:
+   - `somosdualidad.com`
+   - `admin.somosdualidad.com`
+3. En Vercel, agregar rewrite para que `admin.somosdualidad.com/*` resuelva a `/admin/*`.
+4. Definir env vars (arriba) en Production y Preview.
+
+## Futuras migraciones
+
+La estructura en Payload deja listas las colecciones para migración posterior desde Sanity (scripts ETL separados).
