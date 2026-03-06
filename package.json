@@ -1,23 +1,38 @@
 {
   "name": "somos-dualidad",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed": "npx ts-node --project tsconfig.json -e \"require('./scripts/seed.ts')\""
   },
   "dependencies": {
-    "@sanity/client": "^7.15.0",
-    "framer-motion": "^11.11.7",
-    "groq": "^5.10.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "@supabase/ssr": "^0.5.1",
+    "@tiptap/react": "^2.9.1",
+    "@tiptap/starter-kit": "^2.9.1",
+    "@tiptap/extension-image": "^2.9.1",
+    "@tiptap/extension-link": "^2.9.1",
+    "@tiptap/extension-placeholder": "^2.9.1",
+    "@tiptap/extension-text-align": "^2.9.1",
+    "@react-email/components": "^0.0.29",
+    "resend": "^4.0.0",
     "next": "14.2.15",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "react-hook-form": "^7.53.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "date-fns": "^3.6.0",
+    "slugify": "^1.6.6",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.5.3"
   },
   "devDependencies": {
     "@types/node": "^22.7.5",
