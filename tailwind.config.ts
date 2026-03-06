@@ -9,6 +9,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          bg: "#F8AB8C",
+          title: "#8B0D19",
+          subtitle: "#FFFFFF",
+          text: "#DA5367",
+        },
         cream: {
           DEFAULT: "#FAF7F2",
           50: "#FDFCFA",

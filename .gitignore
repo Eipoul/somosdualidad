@@ -6,3 +6,5 @@ node_modules/
 sanity/node_modules/
 sanity/dist/
 .DS_Store
+*.txt
+Llaves_Secretas_Somosdualidad.txt

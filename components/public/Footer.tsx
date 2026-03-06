@@ -25,20 +25,20 @@ const socialIcons = {
 
 export function Footer() {
   return (
-    <footer className="bg-espresso text-cream/80">
+    <footer className="bg-brand-title text-brand-subtitle/80">
       <div className="container-page py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand */}
           <div>
-            <h3 className="font-display text-2xl text-cream mb-3">Somos Dualidad</h3>
-            <p className="text-sm text-cream/60 leading-relaxed max-w-xs">
+            <h3 className="font-display text-2xl text-brand-subtitle mb-3">Somos Dualidad</h3>
+            <p className="text-sm text-brand-subtitle/60 leading-relaxed max-w-xs">
               Un podcast que explora las dualidades de la vida: el amor y la pérdida, la fortaleza y la vulnerabilidad.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="text-sm font-semibold text-cream uppercase tracking-wider mb-4">Explora</h4>
+            <h4 className="text-sm font-semibold text-brand-subtitle uppercase tracking-wider mb-4">Explora</h4>
             <ul className="space-y-2">
               {[
                 { href: "/podcast", label: "Episodios" },
@@ -46,7 +46,7 @@ export function Footer() {
                 { href: "/subscribe", label: "Suscríbete" },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-cream/60 hover:text-terracotta transition-colors">
+                  <Link href={link.href} className="text-sm text-brand-subtitle/60 hover:text-brand-bg transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -56,14 +56,14 @@ export function Footer() {
 
           {/* Social */}
           <div>
-            <h4 className="text-sm font-semibold text-cream uppercase tracking-wider mb-4">Síguenos</h4>
+            <h4 className="text-sm font-semibold text-brand-subtitle uppercase tracking-wider mb-4">Síguenos</h4>
             <div className="flex gap-4">
               {Object.entries(socialIcons).map(([platform, icon]) => (
                 <a
                   key={platform}
                   href="#"
                   aria-label={platform}
-                  className="text-cream/40 hover:text-terracotta transition-colors"
+                  className="text-brand-subtitle/40 hover:text-brand-bg transition-colors"
                 >
                   {icon}
                 </a>
@@ -72,11 +72,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-cream/10 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-cream/40">
+        <div className="border-t border-brand-subtitle/10 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-brand-subtitle/40">
             © {new Date().getFullYear()} Somos Dualidad. Todos los derechos reservados.
           </p>
-          <p className="text-xs text-cream/40">Hecho con amor ✦</p>
+          <p className="text-xs text-brand-subtitle/40">Hecho con amor ✦</p>
         </div>
       </div>
     </footer>

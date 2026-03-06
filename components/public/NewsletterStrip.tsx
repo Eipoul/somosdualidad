@@ -34,21 +34,21 @@ export function NewsletterStrip() {
   }
 
   return (
-    <section className="py-20 bg-terracotta grain-overlay overflow-hidden">
+    <section className="py-20 bg-brand-title grain-overlay overflow-hidden">
       <div className="container-page relative z-10">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-display text-4xl text-cream mb-4">
+          <h2 className="font-display text-4xl text-brand-subtitle mb-4">
             No te pierdas ningún episodio
           </h2>
-          <p className="text-cream/70 mb-10 text-lg">
+          <p className="text-brand-subtitle/70 mb-10 text-lg">
             Suscríbete y recibe cada nuevo episodio directo en tu bandeja de entrada, junto con contenido exclusivo.
           </p>
 
           {status === "success" ? (
-            <div className="bg-cream/15 rounded-2xl px-8 py-6 text-cream">
+            <div className="bg-brand-subtitle/15 rounded-2xl px-8 py-6 text-brand-subtitle">
               <div className="text-4xl mb-3">🌿</div>
               <p className="font-medium text-lg">{message}</p>
-              <p className="text-cream/70 text-sm mt-2">Revisa tu correo para confirmar tu suscripción.</p>
+              <p className="text-brand-subtitle/70 text-sm mt-2">Revisa tu correo para confirmar tu suscripción.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -58,12 +58,12 @@ export function NewsletterStrip() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="tu@correo.com"
                 required
-                className="flex-1 rounded-full px-6 py-3 bg-cream text-espresso placeholder-espresso/40 text-sm outline-none focus:ring-2 focus:ring-cream/50 transition-all"
+                className="flex-1 rounded-full px-6 py-3 bg-brand-subtitle text-brand-title placeholder-brand-title/40 text-sm outline-none focus:ring-2 focus:ring-brand-subtitle/50 transition-all"
               />
               <Button
                 type="submit"
                 loading={status === "loading"}
-                className="bg-espresso text-cream hover:bg-espresso-light rounded-full whitespace-nowrap"
+                className="bg-brand-bg text-brand-title hover:bg-brand-bg/80 rounded-full whitespace-nowrap"
               >
                 Suscribirme
               </Button>
@@ -71,7 +71,7 @@ export function NewsletterStrip() {
           )}
 
           {status === "error" && (
-            <p className="text-cream/80 text-sm mt-3">{message}</p>
+            <p className="text-brand-subtitle/80 text-sm mt-3">{message}</p>
           )}
         </div>
       </div>

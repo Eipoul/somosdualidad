@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: #FAF7F2;
-    --foreground: #2C1A0E;
+    --background: #F8AB8C;
+    --foreground: #8B0D19;
   }
 
   * {
@@ -17,7 +17,7 @@
   }
 
   body {
-    @apply bg-cream text-espresso font-body antialiased;
+    @apply bg-brand-bg text-brand-title font-body antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -80,14 +80,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #FAF7F2;
+  background: #F8AB8C;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C4714F;
+  background: #8B0D19;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #A05A3A;
+  background: #6B0A13;
 }

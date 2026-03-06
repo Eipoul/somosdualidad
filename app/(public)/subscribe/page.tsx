@@ -42,18 +42,18 @@ export default function SubscribePage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-brand-bg">
       {/* Hero */}
-      <div className="grain-overlay bg-gradient-to-br from-espresso via-espresso-light to-espresso-medium py-24">
+      <div className="grain-overlay bg-brand-title py-24">
         <div className="container-page relative z-10 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-terracotta/20 text-terracotta px-4 py-1.5 rounded-full text-sm font-medium mb-8">
-            <span className="w-2 h-2 bg-terracotta rounded-full" />
+          <div className="inline-flex items-center gap-2 bg-brand-subtitle/20 text-brand-subtitle px-4 py-1.5 rounded-full text-sm font-medium mb-8">
+            <span className="w-2 h-2 bg-brand-subtitle rounded-full" />
             Newsletter gratuito
           </div>
-          <h1 className="font-display text-5xl md:text-6xl text-cream leading-tight mb-6">
+          <h1 className="font-display text-5xl md:text-6xl text-brand-subtitle leading-tight mb-6">
             Únete a la conversación
           </h1>
-          <p className="text-cream/70 text-lg">
+          <p className="text-brand-subtitle/70 text-lg">
             Suscríbete para recibir nuevos episodios y contenido exclusivo directamente en tu correo.
           </p>
         </div>
@@ -63,18 +63,18 @@ export default function SubscribePage() {
       <div className="container-page py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-5xl mx-auto">
           {/* Form */}
-          <div className="bg-white rounded-4xl p-10 shadow-warm-lg">
+          <div className="bg-brand-subtitle rounded-4xl p-10 shadow-warm-lg">
             {status === "success" ? (
               <div className="text-center py-8">
                 <div className="text-6xl mb-6">🌿</div>
-                <h2 className="font-display text-3xl text-espresso mb-3">¡Bienvenida!</h2>
-                <p className="text-espresso/60 leading-relaxed">{message}</p>
-                <p className="text-espresso/40 text-sm mt-4">Revisa tu bandeja de entrada para confirmar.</p>
+                <h2 className="font-display text-3xl text-brand-title mb-3">¡Bienvenida!</h2>
+                <p className="text-brand-text leading-relaxed">{message}</p>
+                <p className="text-brand-text/60 text-sm mt-4">Revisa tu bandeja de entrada para confirmar.</p>
               </div>
             ) : (
               <>
-                <h2 className="font-display text-3xl text-espresso mb-2">Suscríbete gratis</h2>
-                <p className="text-espresso/60 mb-8">Sin costo, sin spam. Cancela cuando quieras.</p>
+                <h2 className="font-display text-3xl text-brand-title mb-2">Suscríbete gratis</h2>
+                <p className="text-brand-text mb-8">Sin costo, sin spam. Cancela cuando quieras.</p>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                   <Input
                     type="email"
@@ -85,11 +85,11 @@ export default function SubscribePage() {
                     required
                     error={status === "error" ? message : undefined}
                   />
-                  <Button type="submit" size="lg" loading={status === "loading"} className="w-full">
+                  <Button type="submit" size="lg" loading={status === "loading"} className="w-full bg-brand-title text-brand-subtitle hover:bg-brand-title/80">
                     Suscribirme ahora
                   </Button>
                 </form>
-                <p className="text-xs text-espresso/40 mt-6 text-center">
+                <p className="text-xs text-brand-text/60 mt-6 text-center">
                   Al suscribirte aceptas recibir correos de Somos Dualidad. Puedes cancelar en cualquier momento.
                 </p>
               </>
@@ -98,14 +98,14 @@ export default function SubscribePage() {
 
           {/* Perks */}
           <div className="flex flex-col justify-center gap-8">
-            <h2 className="font-display text-2xl text-espresso">¿Qué recibirás?</h2>
+            <h2 className="font-display text-2xl text-brand-title">¿Qué recibirás?</h2>
             <div className="grid grid-cols-1 gap-6">
               {perks.map((perk) => (
                 <div key={perk.title} className="flex items-start gap-4">
                   <span className="text-2xl">{perk.icon}</span>
                   <div>
-                    <h3 className="font-semibold text-espresso mb-1">{perk.title}</h3>
-                    <p className="text-sm text-espresso/60">{perk.desc}</p>
+                    <h3 className="font-semibold text-brand-title mb-1">{perk.title}</h3>
+                    <p className="text-sm text-brand-text">{perk.desc}</p>
                   </div>
                 </div>
               ))}
