@@ -25,20 +25,32 @@ export function HeroSection() {
           </h1>
 
           {/* Tagline */}
-          <p className="text-brand-text text-lg sm:text-xl leading-relaxed mb-10 max-w-xl animate-fade-up">
-            Exploramos las dualidades de la vida: el amor y la pérdida, la fortaleza y la vulnerabilidad, la tradición y el cambio.
-          </p>
+          <div className="text-brand-text text-lg sm:text-xl leading-relaxed mb-10 max-w-2xl animate-fade-up space-y-4">
+            <p>
+              Conversaciones entre Psicólogos, migrantes rompiéndola con proyectos brutales y mi propia experiencia que muestra la magia que existe de exponerte a nuevos contextos, cambiar de país y retos.
+            </p>
+            <p>
+              Somos Dualidad es un proyecto acerca de lo incómodo que es vivir en el extranjero, hablamos de tolerancia al cambio, a la frustración, resiliencia y adaptación real a través de decisiones incómodas.
+            </p>
+            <p>
+              Aquí odiamos la frase &ldquo;no eres ni de aquí ni de allá&rdquo;, somos de ambos. <span className="font-semibold text-brand-title">#SomosDualidad</span>
+            </p>
+          </div>
 
           {/* CTAs */}
           <div className="flex flex-wrap gap-4 animate-fade-up">
-            <Link href="/podcast">
+            <a
+              href="https://open.spotify.com/show/0AonWgzQ3YxWRrY6xQ4plt?si=b9000984e54f44e9"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Button size="lg" className="bg-brand-title text-brand-subtitle hover:bg-brand-title/80">
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
                 </svg>
                 Escuchar ahora
               </Button>
-            </Link>
+            </a>
             <Link href="/subscribe">
               <Button size="lg" variant="outline" className="border-brand-title/30 text-brand-title hover:bg-brand-title/10 hover:border-brand-title/50">
                 Suscribirse

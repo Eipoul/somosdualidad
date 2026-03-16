@@ -27,28 +27,32 @@ export function AboutSection() {
           <div>
             <div className="flex items-center gap-3 mb-8">
               <div className="w-8 h-px bg-brand-title" />
-              <span className="text-brand-title text-sm font-medium uppercase tracking-widest">Nuestra Historia</span>
+              <span className="text-brand-title text-sm font-medium uppercase tracking-widest">La creadora</span>
             </div>
 
             <h2 className="font-display text-4xl sm:text-5xl text-brand-title leading-tight mb-6">
-              Dos voces,
-              <br />
-              <span className="text-brand-text italic">una conversación</span>
+              Soy Manett
             </h2>
 
             <div className="space-y-4 text-brand-text leading-relaxed">
               <p>
-                Somos Dualidad nació de la necesidad de hablar con honestidad sobre la complejidad de ser humano. Sobre esos momentos en que dos cosas aparentemente opuestas coexisten: la alegría y el duelo, la certeza y la duda.
+                Y me fui de mi país porque la vida que tenía dejó de ser suficiente para lo que quería construir.
               </p>
               <p>
-                Cada episodio es una conversación profunda y auténtica que busca resonar con tu propia historia, recordándote que no estás solo en la tuya.
+                Migré primero a Nueva York, después a España y hoy vivo en Alemania. En ese proceso descubrí algo curioso. Gran parte del contenido en redes sobre migración repite dos discursos: o todo es siempre extrañar... o todo son viajes y fotos bonitas para Instagram.
+              </p>
+              <p>
+                Pero migrar también mueve tu identidad, tu sentido de pertenencia y la forma en la que entiendes tu vida. Durante años he explorado ese proceso desde la experiencia y la conversación con especialistas en salud mental: de ahí nace este espacio.
+              </p>
+              <p>
+                Si lo que buscas es contenido que romantice la vida en el extranjero o que se quede en el dolor de extrañar, este no es tu lugar. Pero si quieres entender qué pasa en tu mente y aprender a atravesar el duelo, la ansiedad y miedo al migrar para construir una vida en otro país, entonces sí: <strong>quédate.</strong>
               </p>
             </div>
 
             <div className="mt-10">
-              <Link href="/podcast">
-                <Button variant="outline" className="border-brand-title/20 text-brand-title hover:bg-brand-title hover:text-brand-subtitle">
-                  Conoce nuestros episodios
+              <Link href="/subscribe">
+                <Button className="bg-brand-title text-brand-subtitle hover:bg-brand-title/80">
+                  Quiero ser parte
                 </Button>
               </Link>
             </div>

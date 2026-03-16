@@ -6,7 +6,8 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/podcast", label: "Podcast" },
+  { href: "/podcast", label: "Episodios" },
+  { href: "/psicologos", label: "Psicólogos" },
   { href: "/blog", label: "Blog" },
   { href: "/subscribe", label: "Suscríbete" },
 ];
@@ -39,12 +40,14 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/subscribe"
+          <a
+            href="https://open.spotify.com/show/0AonWgzQ3YxWRrY6xQ4plt?si=b9000984e54f44e9"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-brand-title text-brand-subtitle text-sm font-medium px-5 py-2 rounded-full hover:bg-brand-title/80 transition-colors shadow-warm-sm"
           >
             Escuchar ahora
-          </Link>
+          </a>
         </div>
 
         {/* Mobile hamburger */}
