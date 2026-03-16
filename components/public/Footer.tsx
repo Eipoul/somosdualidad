@@ -25,7 +25,7 @@ const socialIcons = {
 
 export function Footer() {
   return (
-    <footer className="bg-brand-title text-brand-subtitle/80">
+    <footer className="bg-espresso text-brand-subtitle/80">
       <div className="container-page py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand */}
@@ -46,7 +46,7 @@ export function Footer() {
                 { href: "/subscribe", label: "Suscríbete" },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-brand-subtitle/60 hover:text-brand-bg transition-colors">
+                  <Link href={link.href} className="text-sm text-brand-subtitle/60 hover:text-brand-blush transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -63,7 +63,7 @@ export function Footer() {
                   key={platform}
                   href="#"
                   aria-label={platform}
-                  className="text-brand-subtitle/40 hover:text-brand-bg transition-colors"
+                  className="text-brand-subtitle/40 hover:text-brand-blush transition-colors"
                 >
                   {icon}
                 </a>

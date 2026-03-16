@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: #F8AB8C;
-    --foreground: #8B0D19;
+    --background: #F5EAD0;
+    --foreground: #3D1F0A;
   }
 
   * {
@@ -80,14 +80,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8AB8C;
+  background: #F5EAD0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8B0D19;
+  background: #E8620A;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6B0A13;
+  background: #B84D08;
 }

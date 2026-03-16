@@ -7,7 +7,7 @@ import type { Episode } from "@/lib/utils";
 
 export function FeaturedEpisode({ episode }: { episode: Episode }) {
   return (
-    <section className="py-24 bg-brand-bg">
+    <section className="py-24 bg-brand-blush">
       <div className="container-page">
         <div className="flex items-center gap-3 mb-12">
           <div className="w-8 h-px bg-brand-title" />
